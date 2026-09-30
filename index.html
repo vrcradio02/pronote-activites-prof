@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Espace professeur</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        /* ==============================
+           LOGIN
+        ============================== */
+
+        .login-page {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #f8fafc
+                );
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.10);
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #4f46e5;
+
+            color: white;
+
+            border-radius: 18px;
+
+            font-size: 30px;
+
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .description {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 14px;
+
+            border: 1px solid #dbe1ea;
+
+            border-radius: 11px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background: white;
+        }
+
+        input:focus {
+            border-color: #4f46e5;
+        }
+
+        button {
+            border: 0;
+
+            border-radius: 11px;
+
+            padding: 13px 18px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #4338ca;
+        }
+
+        .secondary {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .error {
+            color: #dc2626;
+            margin-top: 15px;
+        }
+
+
+        /* ==============================
+           DASHBOARD
+        ============================== */
+
+        .dashboard {
+            min-height: 100vh;
+        }
+
+        header {
+            height: 70px;
+
+            background: white;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 30px;
+        }
+
+        header h1 {
+            font-size: 21px;
+            margin: 0;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-email {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 30px 20px;
+        }
+
+
+        /* ==============================
+           CREATE
+        ============================== */
+
+        .card {
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(0, 0, 0, .05);
+
+            margin-bottom: 25px;
+        }
+
+        .create-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 2fr auto;
+
+            gap: 12px;
+
+            align-items: end;
+        }
+
+
+        /* ==============================
+           ACTIVITIES
+        ============================== */
+
+        .activity-card {
+            border: 1px solid #e2e8f0;
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            margin-top: 15px;
+        }
+
+        .activity-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+        .activity-title {
+            font-size: 19px;
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+        }
+
+        .activity-date {
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        .activity-actions {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+
+        /* ==============================
+           LINK
+        ============================== */
+
+        .link-container {
+            display: flex;
+
+            margin-top: 18px;
+        }
+
+        .link-container input {
+            flex: 1;
+
+            border-radius:
+                10px 0 0 10px;
+
+            background: #f8fafc;
+        }
+
+        .link-container button {
+            border-radius:
+                0 10px 10px 0;
+        }
+
+
+        /* ==============================
+           STATS
+        ============================== */
+
+        .stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin-top: 25px;
+        }
+
+        .stat {
+            background: #f8fafc;
+
+            border-radius: 15px;
+
+            padding: 20px;
+        }
+
+        .stat-label {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+
+            font-weight: bold;
+
+            margin-top: 8px;
+        }
+
+
+        /* ==============================
+           GRAPH
+        ============================== */
+
+        .graph {
+            margin-top: 20px;
+
+            height: 25px;
+
+            width: 100%;
+
+            display: flex;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: #e2e8f0;
+        }
+
+        .graph-named {
+            background: #4f46e5;
+        }
+
+        .graph-anonymous {
+            background: #94a3b8;
+        }
+
+        .legend {
+            display: flex;
+
+            gap: 20px;
+
+            margin-top: 12px;
+
+            font-size: 14px;
+
+            color: #64748b;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+
+            border-radius: 50%;
+
+            display: inline-block;
+
+            margin-right: 5px;
+        }
+
+        .dot-purple {
+            background: #4f46e5;
+        }
+
+        .dot-grey {
+            background: #94a3b8;
+        }
+
+
+        /* ==============================
+           TABLE
+        ============================== */
+
+        .people-title {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
+            text-align: left;
+        }
+
+        th {
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+
+        /* ==============================
+           HIDDEN
+        ============================== */
+
+        .hidden {
+            display: none !important;
+        }
+
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media(max-width: 750px) {
+
+            header {
+                padding: 0 15px;
+            }
+
+            .user-email {
+                display: none;
+            }
+
+            .create-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-top {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .link-container {
+                flex-direction: column;
+            }
+
+            .link-container input {
+                border-radius: 10px;
+
+                margin-bottom: 8px;
+            }
+
+            .link-container button {
+                border-radius: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     PAGE CONNEXION
+================================================== -->
+
+<div
+    id="loginPage"
+    class="login-page"
+>
+
+    <div class="login-card">
+
+        <div class="logo">
+            👨‍🏫
+        </div>
+
+        <h1>
+            Espace professeur
+        </h1>
+
+        <p class="description">
+            Connecte-toi pour créer tes activités
+            et consulter les participations.
+        </p>
+
+
+        <label for="email">
+            Adresse email
+        </label>
+
+        <input
+            id="email"
+            type="email"
+            placeholder="professeur@email.fr"
+        >
+
+
+        <label for="password">
+            Mot de passe
+        </label>
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Mot de passe"
+        >
+
+
+        <button
+            id="loginButton"
+            class="primary"
+            style="width:100%; margin-top:20px;"
+        >
+            Se connecter
+        </button>
+
+
+        <div
+            id="loginError"
+            class="error"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================================================
+     DASHBOARD
+================================================== -->
+
+<div
+    id="dashboard"
+    class="dashboard hidden"
+>
+
+
+    <!-- HEADER -->
+
+    <header>
+
+        <h1>
+            📚 Mes activités
+        </h1>
+
+
+        <div class="header-right">
+
+            <span
+                id="userEmail"
+                class="user-email"
+            ></span>
+
+
+            <button
+                id="logoutButton"
+                class="danger"
+            >
+                Déconnexion
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="container">
+
+
+        <!-- ==========================================
+             CREATION ACTIVITE
+        =========================================== -->
+
+        <div class="card">
+
+            <h2>
+                Créer une activité
+            </h2>
+
+            <p class="description">
+                Donne un nom à l'activité et colle
+                le lien vers l'activité.
+            </p>
+
+
+            <div class="create-grid">
+
+
+                <div>
+
+                    <label>
+                        Nom
+                    </label>
+
+                    <input
+                        id="activityName"
+                        placeholder="Ex : Exercice de maths"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Lien de l'activité
+                    </label>
+
+                    <input
+                        id="activityUrl"
+                        placeholder="https://..."
+                    >
+
+                </div>
+
+
+                <button
+                    id="createButton"
+                    class="primary"
+                >
+                    Créer
+                </button>
+
+
+            </div>
+
+
+            <div
+                id="createError"
+                class="error"
+            ></div>
+
+        </div>
+
+
+
+        <!-- ==========================================
+             LISTE ACTIVITES
+        =========================================== -->
+
+        <div class="card">
+
+            <h2>
+                Mes activités
+            </h2>
+
+
+            <div id="activities">
+
+                Chargement...
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- ==================================================
+     CONFIGURATION
+================================================== -->
+
+<script src="config.js"></script>
+
+
+<script>
+
+    // ==================================================
+    // SUPABASE
+    // ==================================================
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    // ==================================================
+    // ELEMENTS
+    // ==================================================
+
+    const loginPage =
+        document.getElementById(
+            "loginPage"
+        );
+
+    const dashboard =
+        document.getElementById(
+            "dashboard"
+        );
+
+
+    // ==================================================
+    // AFFICHAGE
+    // ==================================================
+
+    function showLogin() {
+
+        loginPage.classList.remove(
+            "hidden"
+        );
+
+        dashboard.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    function showDashboard(user) {
+
+        loginPage.classList.add(
+            "hidden"
+        );
+
+        dashboard.classList.remove(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "userEmail"
+        ).textContent =
+            user.email;
+
+
+        loadActivities();
+
+    }
+
+
+    // ==================================================
+    // VERIFIER CONNEXION
+    // ==================================================
+
+    async function checkSession() {
+
+        const {
+            data: {
+                session
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if (session) {
+
+            showDashboard(
+                session.user
+            );
+
+        } else {
+
+            showLogin();
+
+        }
+
+    }
+
+
+    // ==================================================
+    // CONNEXION
+    // ==================================================
+
+    document
+        .getElementById(
+            "loginButton"
+        )
+        .addEventListener(
+            "click",
+            login
+        );
+
+
+    async function login() {
+
+        const email =
+            document
+                .getElementById(
+                    "email"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "password"
+                )
+                .value;
+
+
+        const errorBox =
+            document
+                .getElementById(
+                    "loginError"
+                );
+
+
+        errorBox.textContent = "";
+
+
+        if (!email || !password) {
+
+            errorBox.textContent =
+                "Remplis tous les champs.";
+
+            return;
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .auth
+                .signInWithPassword({
+
+                    email:
+                        email,
+
+                    password:
+                        password
+
+                });
+
+
+        if (error) {
+
+            console.error(error);
+
+            errorBox.textContent =
+                "Email ou mot de passe incorrect.";
+
+            return;
+
+        }
+
+
+        showDashboard(
+            data.user
+        );
+
+    }
+
+
+    // ==================================================
+    // DECONNEXION
+    // ==================================================
+
+    document
+        .getElementById(
+            "logoutButton"
+        )
+        .addEventListener(
+            "click",
+            async function() {
+
+                await supabaseClient
+                    .auth
+                    .signOut();
+
+                showLogin();
+
+            }
+        );
+
+
+    // ==================================================
+    // GENERATEUR CODE UNIQUE
+    // ==================================================
+
+    function generateCode() {
+
+        const chars =
+            "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+
+        const array =
+            new Uint32Array(16);
+
+
+        crypto.getRandomValues(
+            array
+        );
+
+
+        let code = "";
+
+
+        for (
+            let i = 0;
+            i < array.length;
+            i++
+        ) {
+
+            code +=
+                chars[
+                    array[i] %
+                    chars.length
+                ];
+
+        }
+
+
+        return code;
+
+    }
+
+
+    // ==================================================
+    // CREER ACTIVITE
+    // ==================================================
+
+    document
+        .getElementById(
+            "createButton"
+        )
+        .addEventListener(
+            "click",
+            createActivity
+        );
+
+
+    async function createActivity() {
+
+        const name =
+            document
+                .getElementById(
+                    "activityName"
+                )
+                .value
+                .trim();
+
+
+        const url =
+            document
+                .getElementById(
+                    "activityUrl"
+                )
+                .value
+                .trim();
+
+
+        const errorBox =
+            document
+                .getElementById(
+                    "createError"
+                );
+
+
+        errorBox.textContent = "";
+
+
+        // Vérification nom
+
+        if (!name) {
+
+            errorBox.textContent =
+                "Indique le nom de l'activité.";
+
+            return;
+
+        }
+
+
+        // Vérification URL
+
+        if (!url) {
+
+            errorBox.textContent =
+                "Indique le lien de l'activité.";
+
+            return;
+
+        }
+
+
+        try {
+
+            new URL(url);
+
+        } catch {
+
+            errorBox.textContent =
+                "Le lien de l'activité n'est pas valide.";
+
+            return;
+
+        }
+
+
+        // Utilisateur
+
+        const {
+            data: {
+                user
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getUser();
+
+
+        if (!user) {
+
+            showLogin();
+
+            return;
+
+        }
+
+
+        // Désactiver bouton
+
+        const createButton =
+            document.getElementById(
+                "createButton"
+            );
+
+
+        createButton.disabled =
+            true;
+
+
+        createButton.textContent =
+            "Création...";
+
+
+        let success = false;
+
+        let createdCode = null;
+
+
+        /*
+         * On tente plusieurs codes.
+         *
+         * Le champ "code" est UNIQUE
+         * dans Supabase.
+         */
+
+        for (
+            let attempt = 0;
+            attempt < 5;
+            attempt++
+        ) {
+
+            const code =
+                generateCode();
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("activities")
+                    .insert({
+
+                        teacher_id:
+                            user.id,
+
+                        name:
+                            name,
+
+                        activity_url:
+                            url,
+
+                        code:
+                            code
+
+                    });
+
+
+            if (!error) {
+
+                success = true;
+
+                createdCode =
+                    code;
+
+                break;
+
+            }
+
+
+            console.log(
+                "Nouvel essai de code..."
+            );
+
+        }
+
+
+        createButton.disabled =
+            false;
+
+        createButton.textContent =
+            "Créer";
+
+
+        if (!success) {
+
+            errorBox.textContent =
+                "Impossible de créer l'activité.";
+
+            return;
+
+        }
+
+
+        // Nettoyage
+
+        document
+            .getElementById(
+                "activityName"
+            )
+            .value = "";
+
+
+        document
+            .getElementById(
+                "activityUrl"
+            )
+            .value = "";
+
+
+        // Recharger
+
+        await loadActivities();
+
+
+        alert(
+            "Activité créée !\n\n" +
+            "Code : " +
+            createdCode
+        );
+
+    }
+
+
+    // ==================================================
+    // LIEN ELEVE
+    // ==================================================
+
+    function getStudentLink(code) {
+
+        /*
+         * TON SITE ELEVE
+         */
+
+        const studentSite =
+            "https://vrcradio02.github.io/pronote-activites-eleves/";
+
+
+        return (
+            studentSite +
+            "?code=" +
+            encodeURIComponent(
+                code
+            )
+        );
+
+    }
+
+
+    // ==================================================
+    // CHARGER ACTIVITES
+    // ==================================================
+
+    async function loadActivities() {
+
+        const container =
+            document.getElementById(
+                "activities"
+            );
+
+
+        container.innerHTML =
+            "Chargement...";
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("activities")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending:
+                            false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            container.innerHTML =
+                "<p>Erreur de chargement.</p>";
+
+            return;
+
+        }
+
+
+        if (!data || data.length === 0) {
+
+            container.innerHTML = `
+
+                <p class="description">
+
+                    Aucune activité créée pour le moment.
+
+                </p>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        for (
+            const activity
+            of data
+        ) {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "activity-card";
+
+
+            const link =
+                getStudentLink(
+                    activity.code
+                );
+
+
+            element.innerHTML = `
+
+                <div class="activity-top">
+
+                    <div>
+
+                        <div class="activity-title">
+
+                            ${escapeHtml(
+                                activity.name
+                            )}
+
+                        </div>
+
+                        <div class="activity-date">
+
+                            Créée le
+                            ${new Date(
+                                activity.created_at
+                            ).toLocaleString(
+                                "fr-FR"
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="activity-actions">
+
+                        <button
+                            class="secondary"
+                            onclick="loadStats(
+                                '${activity.id}'
+                            )"
+                        >
+
+                            📊 Statistiques
+
+                        </button>
+
+
+                        <button
+                            class="danger"
+                            onclick="deleteActivity(
+                                '${activity.id}'
+                            )"
+                        >
+
+                            Supprimer
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="link-container">
+
+                    <input
+                        readonly
+                        value="${link}"
+                    >
+
+                    <button
+                        class="primary"
+                        onclick="copyLink(
+                            '${escapeAttribute(
+                                link
+                            )}'
+                        )"
+                    >
+
+                        Copier
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="stats-${activity.id}"
+                ></div>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+
+    }
+
+
+    // ==================================================
+    // COPIER LIEN
+    // ==================================================
+
+    async function copyLink(link) {
+
+        try {
+
+            await navigator
+                .clipboard
+                .writeText(link);
+
+
+            alert(
+                "Lien copié !"
+            );
+
+        } catch {
+
+            alert(
+                "Impossible de copier automatiquement le lien."
+            );
+
+        }
+
+    }
+
+
+    // ==================================================
+    // STATISTIQUES
+    // ==================================================
+
+    async function loadStats(
+        activityId
+    ) {
+
+        const container =
+            document.getElementById(
+                "stats-" +
+                activityId
+            );
+
+
+        container.innerHTML =
+            "<p>Chargement...</p>";
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("visits")
+                .select(
+                    "id,name,is_anonymous,created_at"
+                )
+                .eq(
+                    "activity_id",
+                    activityId
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:
+                            false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            container.innerHTML =
+                "<p>Impossible de charger les statistiques.</p>";
+
+            return;
+
+        }
+
+
+        const visits =
+            data || [];
+
+
+        // ==============================================
+        // COMPTEURS
+        // ==============================================
+
+        const total =
+            visits.length;
+
+
+        const anonymous =
+            visits.filter(
+                visit =>
+                    visit.is_anonymous
+            ).length;
+
+
+        const named =
+            total -
+            anonymous;
+
+
+        // ==============================================
+        // GROUPEMENT DES NOMS
+        // ==============================================
+
+        const people = {};
+
+
+        for (
+            const visit
+            of visits
+        ) {
+
+            if (
+                visit.is_anonymous ||
+                !visit.name
+            ) {
+
+                continue;
+
+            }
+
+
+            const normalized =
+                visit.name
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                !people[
+                    normalized
+                ]
+            ) {
+
+                people[
+                    normalized
+                ] = {
+
+                    name:
+                        visit.name.trim(),
+
+                    count:
+                        0
+
+                };
+
+            }
+
+
+            people[
+                normalized
+            ].count++;
+
+        }
+
+
+        const peopleList =
+            Object.values(
+                people
+            ).sort(
+                (a, b) =>
+                    b.count -
+                    a.count
+            );
+
+
+        // ==============================================
+        // POURCENTAGES
+        // ==============================================
+
+        let namedPercent = 0;
+        let anonymousPercent = 0;
+
+
+        if (total > 0) {
+
+            namedPercent =
+                (named / total) *
+                100;
+
+
+            anonymousPercent =
+                (anonymous / total) *
+                100;
+
+        }
+
+
+        // ==============================================
+        // TABLEAU
+        // ==============================================
+
+        let rows = "";
+
+
+        for (
+            const person
+            of peopleList
+        ) {
+
+            rows += `
+
+                <tr>
+
+                    <td>
+                        ${escapeHtml(
+                            person.name
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${person.count}
+                        </strong>
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+
+        if (!rows) {
+
+            rows = `
+
+                <tr>
+
+                    <td colspan="2">
+
+                        Aucune visite nominative.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+
+        // ==============================================
+        // AFFICHAGE
+        // ==============================================
+
+        container.innerHTML = `
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+
+                        Total des visites
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        ${total}
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+
+                        Visites avec nom
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        ${named}
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+
+                        Visites anonymes
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        ${anonymous}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="graph">
+
+                <div
+                    class="graph-named"
+                    style="width:${namedPercent}%"
+                ></div>
+
+                <div
+                    class="graph-anonymous"
+                    style="width:${anonymousPercent}%"
+                ></div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <span>
+
+                    <span
+                        class="dot dot-purple"
+                    ></span>
+
+                    Avec nom
+
+                </span>
+
+
+                <span>
+
+                    <span
+                        class="dot dot-grey"
+                    ></span>
+
+                    Anonyme
+
+                </span>
+
+            </div>
+
+
+            <h3 class="people-title">
+
+                👥 Personnes
+
+            </h3>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Nom
+                        </th>
+
+                        <th>
+                            Nombre de visites
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+    }
+
+
+    // ==================================================
+    // SUPPRIMER ACTIVITE
+    // ==================================================
+
+    async function deleteActivity(
+        activityId
+    ) {
+
+        const confirmation =
+            confirm(
+                "Supprimer cette activité ?\n\n" +
+                "Toutes ses statistiques seront également supprimées."
+            );
+
+
+        if (!confirmation) {
+
+            return;
+
+        }
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("activities")
+                .delete()
+                .eq(
+                    "id",
+                    activityId
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            alert(
+                "Impossible de supprimer l'activité."
+            );
+
+            return;
+
+        }
+
+
+        loadActivities();
+
+    }
+
+
+    // ==================================================
+    // SECURITE AFFICHAGE HTML
+    // ==================================================
+
+    function escapeHtml(value) {
+
+        return String(value)
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
+    }
+
+
+    function escapeAttribute(value) {
+
+        return String(value)
+
+            .replaceAll(
+                "\\",
+                "\\\\"
+            )
+
+            .replaceAll(
+                "'",
+                "\\'"
+            );
+
+    }
+
+
+    // ==================================================
+    // DEMARRAGE
+    // ==================================================
+
+    checkSession();
+
+</script>
+
+
+</body>
+
+</html>
