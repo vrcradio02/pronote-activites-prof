@@ -22,19 +22,25 @@
             color: #172033;
         }
 
-        /* ==============================
-           LOGIN
-        ============================== */
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================
+           CONNEXION
+        ========================= */
 
         .login-page {
             min-height: 100vh;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             padding: 20px;
-
             background:
                 linear-gradient(
                     135deg,
@@ -45,12 +51,9 @@
 
         .login-card {
             width: 100%;
-            max-width: 430px;
-
+            max-width: 440px;
             background: white;
-
             padding: 35px;
-
             border-radius: 24px;
 
             box-shadow:
@@ -67,7 +70,6 @@
             justify-content: center;
 
             background: #4f46e5;
-
             color: white;
 
             border-radius: 18px;
@@ -83,6 +85,10 @@
 
         h2 {
             margin-top: 0;
+        }
+
+        h3 {
+            margin-bottom: 10px;
         }
 
         .description {
@@ -104,7 +110,9 @@
 
             padding: 14px;
 
-            border: 1px solid #dbe1ea;
+            border:
+                1px solid
+                #dbe1ea;
 
             border-radius: 11px;
 
@@ -152,31 +160,47 @@
             color: #334155;
         }
 
+        .secondary:hover {
+            background: #cbd5e1;
+        }
+
         .danger {
             background: #fee2e2;
             color: #991b1b;
         }
 
+        .danger:hover {
+            background: #fecaca;
+        }
+
         .error {
             color: #dc2626;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        .success {
+            color: #16a34a;
             margin-top: 15px;
         }
 
 
-        /* ==============================
-           DASHBOARD
-        ============================== */
+        /* =========================
+           HEADER
+        ========================= */
 
         .dashboard {
             min-height: 100vh;
         }
 
         header {
-            height: 70px;
+            min-height: 70px;
 
             background: white;
 
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom:
+                1px solid
+                #e2e8f0;
 
             display: flex;
 
@@ -184,7 +208,10 @@
 
             justify-content: space-between;
 
-            padding: 0 30px;
+            padding:
+                12px 30px;
+
+            gap: 20px;
         }
 
         header h1 {
@@ -194,27 +221,38 @@
 
         .header-right {
             display: flex;
+
             align-items: center;
-            gap: 15px;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
         }
 
-        .user-email {
+        .user-name {
             color: #64748b;
             font-size: 14px;
         }
 
+
+        /* =========================
+           CONTENEUR
+        ========================= */
+
         .container {
+            width: 100%;
             max-width: 1200px;
 
             margin: auto;
 
-            padding: 30px 20px;
+            padding:
+                30px 20px;
         }
 
 
-        /* ==============================
-           CREATE
-        ============================== */
+        /* =========================
+           CARDS
+        ========================= */
 
         .card {
             background: white;
@@ -230,6 +268,11 @@
             margin-bottom: 25px;
         }
 
+
+        /* =========================
+           CREATION
+        ========================= */
+
         .create-grid {
             display: grid;
 
@@ -242,12 +285,14 @@
         }
 
 
-        /* ==============================
-           ACTIVITIES
-        ============================== */
+        /* =========================
+           ACTIVITE
+        ========================= */
 
         .activity-card {
-            border: 1px solid #e2e8f0;
+            border:
+                1px solid
+                #e2e8f0;
 
             border-radius: 16px;
 
@@ -289,9 +334,9 @@
         }
 
 
-        /* ==============================
-           LINK
-        ============================== */
+        /* =========================
+           LIEN
+        ========================= */
 
         .link-container {
             display: flex;
@@ -314,9 +359,9 @@
         }
 
 
-        /* ==============================
+        /* =========================
            STATS
-        ============================== */
+        ========================= */
 
         .stats {
             display: grid;
@@ -352,9 +397,9 @@
         }
 
 
-        /* ==============================
-           GRAPH
-        ============================== */
+        /* =========================
+           GRAPHIQUE
+        ========================= */
 
         .graph {
             margin-top: 20px;
@@ -412,9 +457,9 @@
         }
 
 
-        /* ==============================
-           TABLE
-        ============================== */
+        /* =========================
+           TABLEAU
+        ========================= */
 
         .people-title {
             margin-top: 30px;
@@ -433,7 +478,8 @@
             padding: 14px;
 
             border-bottom:
-                1px solid #e2e8f0;
+                1px solid
+                #e2e8f0;
 
             text-align: left;
         }
@@ -445,26 +491,57 @@
         }
 
 
-        /* ==============================
-           HIDDEN
-        ============================== */
+        /* =========================
+           MODALE
+        ========================= */
 
-        .hidden {
-            display: none !important;
+        .modal {
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(15, 23, 42, .55);
+
+            z-index: 1000;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .modal-card {
+            width: 100%;
+
+            max-width: 440px;
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 20px 70px
+                rgba(0, 0, 0, .20);
         }
 
 
-        /* ==============================
-           RESPONSIVE
-        ============================== */
+        /* =========================
+           MOBILE
+        ========================= */
 
         @media(max-width: 750px) {
 
             header {
-                padding: 0 15px;
+                padding: 15px;
             }
 
-            .user-email {
+            .user-name {
                 display: none;
             }
 
@@ -496,6 +573,14 @@
                 border-radius: 10px;
             }
 
+            .activity-actions {
+                width: 100%;
+            }
+
+            .activity-actions button {
+                flex: 1;
+            }
+
         }
 
     </style>
@@ -506,9 +591,9 @@
 <body>
 
 
-<!-- ==================================================
-     PAGE CONNEXION
-================================================== -->
+<!-- =====================================================
+     CONNEXION
+===================================================== -->
 
 <div
     id="loginPage"
@@ -526,19 +611,20 @@
         </h1>
 
         <p class="description">
-            Connecte-toi pour créer tes activités
+            Connectez-vous pour gérer vos activités
             et consulter les participations.
         </p>
 
 
-        <label for="email">
-            Adresse email
+        <label for="identifier">
+            Identifiant
         </label>
 
         <input
-            id="email"
-            type="email"
-            placeholder="professeur@email.fr"
+            id="identifier"
+            type="text"
+            placeholder="Identifiant"
+            autocomplete="username"
         >
 
 
@@ -550,13 +636,17 @@
             id="password"
             type="password"
             placeholder="Mot de passe"
+            autocomplete="current-password"
         >
 
 
         <button
             id="loginButton"
             class="primary"
-            style="width:100%; margin-top:20px;"
+            style="
+                width:100%;
+                margin-top:20px;
+            "
         >
             Se connecter
         </button>
@@ -573,9 +663,9 @@
 
 
 
-<!-- ==================================================
-     DASHBOARD
-================================================== -->
+<!-- =====================================================
+     TABLEAU DE BORD
+===================================================== -->
 
 <div
     id="dashboard"
@@ -595,9 +685,19 @@
         <div class="header-right">
 
             <span
-                id="userEmail"
-                class="user-email"
-            ></span>
+                id="userName"
+                class="user-name"
+            >
+                herr.lamari
+            </span>
+
+
+            <button
+                id="changePasswordButton"
+                class="secondary"
+            >
+                🔑 Modifier le mot de passe
+            </button>
 
 
             <button
@@ -616,9 +716,9 @@
     <main class="container">
 
 
-        <!-- ==========================================
-             CREATION ACTIVITE
-        =========================================== -->
+        <!-- =========================================
+             CREATION
+        ========================================== -->
 
         <div class="card">
 
@@ -627,8 +727,8 @@
             </h2>
 
             <p class="description">
-                Donne un nom à l'activité et colle
-                le lien vers l'activité.
+                Donnez un nom à l'activité puis
+                collez le lien vers l'activité.
             </p>
 
 
@@ -637,13 +737,15 @@
 
                 <div>
 
-                    <label>
-                        Nom
+                    <label for="activityName">
+                        Nom de l'activité
                     </label>
 
                     <input
                         id="activityName"
-                        placeholder="Ex : Exercice de maths"
+                        type="text"
+                        placeholder="Ex : Exercice de mathématiques"
+                        maxlength="150"
                     >
 
                 </div>
@@ -651,12 +753,13 @@
 
                 <div>
 
-                    <label>
+                    <label for="activityUrl">
                         Lien de l'activité
                     </label>
 
                     <input
                         id="activityUrl"
+                        type="url"
                         placeholder="https://..."
                     >
 
@@ -670,7 +773,6 @@
                     Créer
                 </button>
 
-
             </div>
 
 
@@ -683,9 +785,9 @@
 
 
 
-        <!-- ==========================================
-             LISTE ACTIVITES
-        =========================================== -->
+        <!-- =========================================
+             ACTIVITES
+        ========================================== -->
 
         <div class="card">
 
@@ -702,25 +804,103 @@
 
         </div>
 
-
     </main>
 
 </div>
 
 
 
-<!-- ==================================================
-     CONFIGURATION
-================================================== -->
+<!-- =====================================================
+     MODALE MOT DE PASSE
+===================================================== -->
+
+<div
+    id="passwordModal"
+    class="modal hidden"
+>
+
+    <div class="modal-card">
+
+        <h2>
+            🔑 Modifier le mot de passe
+        </h2>
+
+        <p class="description">
+            Choisissez un nouveau mot de passe.
+        </p>
+
+
+        <label for="newPassword">
+            Nouveau mot de passe
+        </label>
+
+        <input
+            id="newPassword"
+            type="password"
+            placeholder="Nouveau mot de passe"
+            autocomplete="new-password"
+        >
+
+
+        <label for="confirmPassword">
+            Confirmer le mot de passe
+        </label>
+
+        <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirmer le mot de passe"
+            autocomplete="new-password"
+        >
+
+
+        <button
+            id="savePasswordButton"
+            class="primary"
+            style="
+                width:100%;
+                margin-top:20px;
+            "
+        >
+            Enregistrer
+        </button>
+
+
+        <button
+            id="cancelPasswordButton"
+            class="secondary"
+            style="
+                width:100%;
+                margin-top:10px;
+            "
+        >
+            Annuler
+        </button>
+
+
+        <div
+            id="passwordError"
+            class="error"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     CONFIGURATION SUPABASE
+===================================================== -->
 
 <script src="config.js"></script>
 
 
 <script>
 
-    // ==================================================
+    // =====================================================
     // SUPABASE
-    // ==================================================
+    // =====================================================
 
     const supabaseClient =
         supabase.createClient(
@@ -729,14 +909,15 @@
         );
 
 
-    // ==================================================
+    // =====================================================
     // ELEMENTS
-    // ==================================================
+    // =====================================================
 
     const loginPage =
         document.getElementById(
             "loginPage"
         );
+
 
     const dashboard =
         document.getElementById(
@@ -744,9 +925,9 @@
         );
 
 
-    // ==================================================
+    // =====================================================
     // AFFICHAGE
-    // ==================================================
+    // =====================================================
 
     function showLogin() {
 
@@ -773,9 +954,9 @@
 
 
         document.getElementById(
-            "userEmail"
+            "userName"
         ).textContent =
-            user.email;
+            "herr.lamari";
 
 
         loadActivities();
@@ -783,9 +964,9 @@
     }
 
 
-    // ==================================================
-    // VERIFIER CONNEXION
-    // ==================================================
+    // =====================================================
+    // VERIFIER SESSION
+    // =====================================================
 
     async function checkSession() {
 
@@ -814,9 +995,9 @@
     }
 
 
-    // ==================================================
+    // =====================================================
     // CONNEXION
-    // ==================================================
+    // =====================================================
 
     document
         .getElementById(
@@ -830,10 +1011,10 @@
 
     async function login() {
 
-        const email =
+        const identifier =
             document
                 .getElementById(
-                    "email"
+                    "identifier"
                 )
                 .value
                 .trim();
@@ -857,14 +1038,50 @@
         errorBox.textContent = "";
 
 
-        if (!email || !password) {
+        if (
+            !identifier ||
+            !password
+        ) {
 
             errorBox.textContent =
-                "Remplis tous les champs.";
+                "Remplissez tous les champs.";
 
             return;
 
         }
+
+
+        /*
+         * Identifiant autorisé.
+         *
+         * Le site n'accepte ici que :
+         *
+         * herr.lamari
+         */
+
+        if (
+            identifier !==
+            "herr.lamari"
+        ) {
+
+            errorBox.textContent =
+                "Identifiant ou mot de passe incorrect.";
+
+            return;
+
+        }
+
+
+        /*
+         * Supabase Auth utilise une adresse
+         * technique en interne.
+         *
+         * Le professeur n'a pas besoin
+         * de connaître cette adresse.
+         */
+
+        const email =
+            "herr.lamari@prof.pronote-activites.local";
 
 
         const {
@@ -889,7 +1106,7 @@
             console.error(error);
 
             errorBox.textContent =
-                "Email ou mot de passe incorrect.";
+                "Identifiant ou mot de passe incorrect.";
 
             return;
 
@@ -903,9 +1120,55 @@
     }
 
 
-    // ==================================================
+    // =====================================================
+    // ENTREE AVEC TOUCHE ENTREE
+    // =====================================================
+
+    document
+        .getElementById(
+            "password"
+        )
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    login();
+
+                }
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "identifier"
+        )
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key ===
+                    "Enter"
+                ) {
+
+                    login();
+
+                }
+
+            }
+        );
+
+
+    // =====================================================
     // DECONNEXION
-    // ==================================================
+    // =====================================================
 
     document
         .getElementById(
@@ -925,9 +1188,9 @@
         );
 
 
-    // ==================================================
+    // =====================================================
     // GENERATEUR CODE UNIQUE
-    // ==================================================
+    // =====================================================
 
     function generateCode() {
 
@@ -967,9 +1230,9 @@
     }
 
 
-    // ==================================================
+    // =====================================================
     // CREER ACTIVITE
-    // ==================================================
+    // =====================================================
 
     document
         .getElementById(
@@ -1011,24 +1274,20 @@
         errorBox.textContent = "";
 
 
-        // Vérification nom
-
         if (!name) {
 
             errorBox.textContent =
-                "Indique le nom de l'activité.";
+                "Indiquez le nom de l'activité.";
 
             return;
 
         }
 
 
-        // Vérification URL
-
         if (!url) {
 
             errorBox.textContent =
-                "Indique le lien de l'activité.";
+                "Indiquez le lien de l'activité.";
 
             return;
 
@@ -1049,8 +1308,6 @@
         }
 
 
-        // Utilisateur
-
         const {
             data: {
                 user
@@ -1070,8 +1327,6 @@
         }
 
 
-        // Désactiver bouton
-
         const createButton =
             document.getElementById(
                 "createButton"
@@ -1080,7 +1335,6 @@
 
         createButton.disabled =
             true;
-
 
         createButton.textContent =
             "Création...";
@@ -1092,10 +1346,9 @@
 
 
         /*
-         * On tente plusieurs codes.
-         *
-         * Le champ "code" est UNIQUE
-         * dans Supabase.
+         * Plusieurs tentatives permettent
+         * de gérer un éventuel conflit
+         * de code unique.
          */
 
         for (
@@ -1143,7 +1396,7 @@
 
 
             console.log(
-                "Nouvel essai de code..."
+                "Nouvelle tentative de code..."
             );
 
         }
@@ -1166,8 +1419,6 @@
         }
 
 
-        // Nettoyage
-
         document
             .getElementById(
                 "activityName"
@@ -1182,29 +1433,23 @@
             .value = "";
 
 
-        // Recharger
-
         await loadActivities();
 
 
         alert(
             "Activité créée !\n\n" +
-            "Code : " +
+            "Code unique : " +
             createdCode
         );
 
     }
 
 
-    // ==================================================
+    // =====================================================
     // LIEN ELEVE
-    // ==================================================
+    // =====================================================
 
     function getStudentLink(code) {
-
-        /*
-         * TON SITE ELEVE
-         */
 
         const studentSite =
             "https://vrcradio02.github.io/pronote-activites-eleves/";
@@ -1221,9 +1466,9 @@
     }
 
 
-    // ==================================================
+    // =====================================================
     // CHARGER ACTIVITES
-    // ==================================================
+    // =====================================================
 
     async function loadActivities() {
 
@@ -1257,15 +1502,25 @@
 
             console.error(error);
 
-            container.innerHTML =
-                "<p>Erreur de chargement.</p>";
+            container.innerHTML = `
+
+                <p class="error">
+
+                    Erreur de chargement des activités.
+
+                </p>
+
+            `;
 
             return;
 
         }
 
 
-        if (!data || data.length === 0) {
+        if (
+            !data ||
+            data.length === 0
+        ) {
 
             container.innerHTML = `
 
@@ -1306,6 +1561,20 @@
                 );
 
 
+            const safeName =
+                escapeHtml(
+                    activity.name
+                );
+
+
+            const safeDate =
+                new Date(
+                    activity.created_at
+                ).toLocaleString(
+                    "fr-FR"
+                );
+
+
             element.innerHTML = `
 
                 <div class="activity-top">
@@ -1314,20 +1583,14 @@
 
                         <div class="activity-title">
 
-                            ${escapeHtml(
-                                activity.name
-                            )}
+                            ${safeName}
 
                         </div>
 
                         <div class="activity-date">
 
                             Créée le
-                            ${new Date(
-                                activity.created_at
-                            ).toLocaleString(
-                                "fr-FR"
-                            )}
+                            ${safeDate}
 
                         </div>
 
@@ -1368,13 +1631,15 @@
 
                     <input
                         readonly
-                        value="${link}"
+                        value="${escapeAttribute(
+                            link
+                        )}"
                     >
 
                     <button
                         class="primary"
                         onclick="copyLink(
-                            '${escapeAttribute(
+                            '${escapeJs(
                                 link
                             )}'
                         )"
@@ -1403,9 +1668,9 @@
     }
 
 
-    // ==================================================
+    // =====================================================
     // COPIER LIEN
-    // ==================================================
+    // =====================================================
 
     async function copyLink(link) {
 
@@ -1413,7 +1678,9 @@
 
             await navigator
                 .clipboard
-                .writeText(link);
+                .writeText(
+                    link
+                );
 
 
             alert(
@@ -1422,8 +1689,9 @@
 
         } catch {
 
-            alert(
-                "Impossible de copier automatiquement le lien."
+            prompt(
+                "Copiez ce lien :",
+                link
             );
 
         }
@@ -1431,9 +1699,9 @@
     }
 
 
-    // ==================================================
+    // =====================================================
     // STATISTIQUES
-    // ==================================================
+    // =====================================================
 
     async function loadStats(
         activityId
@@ -1476,8 +1744,15 @@
 
             console.error(error);
 
-            container.innerHTML =
-                "<p>Impossible de charger les statistiques.</p>";
+            container.innerHTML = `
+
+                <p class="error">
+
+                    Impossible de charger les statistiques.
+
+                </p>
+
+            `;
 
             return;
 
@@ -1488,10 +1763,6 @@
             data || [];
 
 
-        // ==============================================
-        // COMPTEURS
-        // ==============================================
-
         const total =
             visits.length;
 
@@ -1499,7 +1770,7 @@
         const anonymous =
             visits.filter(
                 visit =>
-                    visit.is_anonymous
+                    visit.is_anonymous === true
             ).length;
 
 
@@ -1508,9 +1779,15 @@
             anonymous;
 
 
-        // ==============================================
-        // GROUPEMENT DES NOMS
-        // ==============================================
+        /*
+         * Regrouper les personnes.
+         *
+         * Jean Dupont
+         * jean dupont
+         *
+         * seront considérés comme
+         * la même personne.
+         */
 
         const people = {};
 
@@ -1574,31 +1851,28 @@
             );
 
 
-        // ==============================================
-        // POURCENTAGES
-        // ==============================================
-
         let namedPercent = 0;
+
         let anonymousPercent = 0;
 
 
         if (total > 0) {
 
             namedPercent =
-                (named / total) *
-                100;
+                (
+                    named /
+                    total
+                ) * 100;
 
 
             anonymousPercent =
-                (anonymous / total) *
-                100;
+                (
+                    anonymous /
+                    total
+                ) * 100;
 
         }
 
-
-        // ==============================================
-        // TABLEAU
-        // ==============================================
 
         let rows = "";
 
@@ -1650,14 +1924,9 @@
         }
 
 
-        // ==============================================
-        // AFFICHAGE
-        // ==============================================
-
         container.innerHTML = `
 
             <div class="stats">
-
 
                 <div class="stat">
 
@@ -1708,7 +1977,6 @@
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -1793,9 +2061,9 @@
     }
 
 
-    // ==================================================
+    // =====================================================
     // SUPPRIMER ACTIVITE
-    // ==================================================
+    // =====================================================
 
     async function deleteActivity(
         activityId
@@ -1804,7 +2072,7 @@
         const confirmation =
             confirm(
                 "Supprimer cette activité ?\n\n" +
-                "Toutes ses statistiques seront également supprimées."
+                "Ses statistiques seront également supprimées."
             );
 
 
@@ -1845,9 +2113,202 @@
     }
 
 
-    // ==================================================
-    // SECURITE AFFICHAGE HTML
-    // ==================================================
+    // =====================================================
+    // MODIFICATION MOT DE PASSE
+    // =====================================================
+
+    const passwordModal =
+        document.getElementById(
+            "passwordModal"
+        );
+
+
+    document
+        .getElementById(
+            "changePasswordButton"
+        )
+        .addEventListener(
+            "click",
+            function() {
+
+                document
+                    .getElementById(
+                        "newPassword"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "confirmPassword"
+                    )
+                    .value = "";
+
+                document
+                    .getElementById(
+                        "passwordError"
+                    )
+                    .textContent = "";
+
+
+                passwordModal.classList.remove(
+                    "hidden"
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "cancelPasswordButton"
+        )
+        .addEventListener(
+            "click",
+            closePasswordModal
+        );
+
+
+    async function changePassword() {
+
+        const newPassword =
+            document
+                .getElementById(
+                    "newPassword"
+                )
+                .value;
+
+
+        const confirmPassword =
+            document
+                .getElementById(
+                    "confirmPassword"
+                )
+                .value;
+
+
+        const errorBox =
+            document
+                .getElementById(
+                    "passwordError"
+                );
+
+
+        errorBox.textContent = "";
+
+
+        if (!newPassword) {
+
+            errorBox.textContent =
+                "Entrez un nouveau mot de passe.";
+
+            return;
+
+        }
+
+
+        if (
+            newPassword.length < 8
+        ) {
+
+            errorBox.textContent =
+                "Le mot de passe doit contenir au moins 8 caractères.";
+
+            return;
+
+        }
+
+
+        if (
+            newPassword !==
+            confirmPassword
+        ) {
+
+            errorBox.textContent =
+                "Les deux mots de passe sont différents.";
+
+            return;
+
+        }
+
+
+        const saveButton =
+            document
+                .getElementById(
+                    "savePasswordButton"
+                );
+
+
+        saveButton.disabled =
+            true;
+
+        saveButton.textContent =
+            "Modification...";
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .auth
+                .updateUser({
+
+                    password:
+                        newPassword
+
+                });
+
+
+        saveButton.disabled =
+            false;
+
+        saveButton.textContent =
+            "Enregistrer";
+
+
+        if (error) {
+
+            console.error(error);
+
+            errorBox.textContent =
+                "Impossible de modifier le mot de passe.";
+
+            return;
+
+        }
+
+
+        closePasswordModal();
+
+
+        alert(
+            "Mot de passe modifié avec succès."
+        );
+
+    }
+
+
+    document
+        .getElementById(
+            "savePasswordButton"
+        )
+        .addEventListener(
+            "click",
+            changePassword
+        );
+
+
+    function closePasswordModal() {
+
+        passwordModal.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    // =====================================================
+    // SECURITE HTML
+    // =====================================================
 
     function escapeHtml(value) {
 
@@ -1886,6 +2347,33 @@
         return String(value)
 
             .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            );
+
+    }
+
+
+    function escapeJs(value) {
+
+        return String(value)
+
+            .replaceAll(
                 "\\",
                 "\\\\"
             )
@@ -1893,14 +2381,24 @@
             .replaceAll(
                 "'",
                 "\\'"
+            )
+
+            .replaceAll(
+                "\n",
+                "\\n"
+            )
+
+            .replaceAll(
+                "\r",
+                "\\r"
             );
 
     }
 
 
-    // ==================================================
+    // =====================================================
     // DEMARRAGE
-    // ==================================================
+    // =====================================================
 
     checkSession();
 
