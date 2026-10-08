@@ -272,6 +272,22 @@
             margin-top: 8px;
         }
 
+        .participant-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .participant-name {
+            font-weight: 500;
+        }
+
+        .participant-time {
+            color: #4f46e5;
+            font-weight: bold;
+        }
+
         .graph {
             margin-top: 20px;
             height: 25px;
@@ -314,28 +330,6 @@
             background: #94a3b8;
         }
 
-        .people-title {
-            margin-top: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th,
-        td {
-            padding: 14px;
-            border-bottom: 1px solid #e2e8f0;
-            text-align: left;
-        }
-
-        th {
-            color: #64748b;
-            font-size: 14px;
-        }
-
         .modal {
             position: fixed;
             inset: 0;
@@ -356,79 +350,38 @@
             box-shadow: 0 20px 70px rgba(0, 0, 0, .20);
         }
 
-        .modal-card-large {
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
         .loading {
             text-align: center;
             color: #64748b;
             padding: 20px;
         }
 
-        .file-input-wrapper {
-            position: relative;
-            display: inline-block;
+        .empty-state {
+            text-align: center;
+            color: #94a3b8;
+            padding: 40px 20px;
         }
 
-        #importFile {
-            display: none;
-        }
-
-        .import-button {
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #16a34a;
+            color: white;
             padding: 12px 20px;
-        }
-
-        .participation-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .participation-table thead {
-            background: #f8fafc;
-        }
-
-        .participation-table th {
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            font-weight: bold;
-            color: #334155;
-        }
-
-        .participation-table td {
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .time-badge {
-            display: inline-block;
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 4px 12px;
             border-radius: 8px;
-            font-size: 12px;
-            font-weight: bold;
+            animation: slideIn 0.3s ease-out;
         }
 
-        .time-badge.long {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .time-badge.short {
-            background: #fed7aa;
-            color: #9a3412;
-        }
-
-        .import-grid {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 12px;
-            margin-bottom: 20px;
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @media(max-width: 750px) {
@@ -474,15 +427,6 @@
             .activity-actions button {
                 flex: 1;
             }
-
-            .import-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-card-large {
-                max-width: 100%;
-            }
-
         }
 
     </style>
@@ -599,8 +543,8 @@
             </h2>
 
             <p class="description">
-                Geben Sie der Aktivität einen Namen und
-                fügen Sie den Link zur Aktivität ein.
+                Geben Sie der Aktivität einen Namen und laden Sie eine PDF-Datei hoch.
+                Die Schüler erhalten einen personalisierten Link zum Öffnen des PDFs.
             </p>
 
             <div class="create-grid">
@@ -622,14 +566,14 @@
 
                 <div>
 
-                    <label for="activityUrl">
-                        Link zur Aktivität
+                    <label for="pdfFile">
+                        PDF-Datei
                     </label>
 
                     <input
-                        id="activityUrl"
-                        type="url"
-                        placeholder="https://..."
+                        id="pdfFile"
+                        type="file"
+                        accept=".pdf"
                     >
 
                 </div>
@@ -648,66 +592,6 @@
         </div>
 
 
-        <!-- DATEN IMPORTIEREN -->
-
-        <div class="card">
-
-            <h2>
-                Teilnahmeverfolgung
-            </h2>
-
-            <p class="description">
-                Importieren Sie eine CSV-Datei mit Informationen über die Zeit, die Schüler in einer Aktivität verbracht haben.
-            </p>
-
-            <div class="import-grid">
-
-                <div>
-
-                    <label for="importFile">
-                        CSV-Datei importieren
-                    </label>
-
-                    <div class="file-input-wrapper">
-
-                        <button
-                            id="importButton"
-                            class="secondary"
-                            style="width: 100%;"
-                        >
-                            📁 Datei auswählen
-                        </button>
-
-                        <input
-                            id="importFile"
-                            type="file"
-                            accept=".csv"
-                        >
-
-                    </div>
-
-                    <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
-                        Format: Schülername, Aktivitätsname, Zeit (Minuten)
-                    </p>
-
-                </div>
-
-                <button
-                    id="viewDataButton"
-                    class="secondary"
-                    style="height: fit-content; white-space: nowrap;"
-                >
-                    👁️ Daten anzeigen
-                </button>
-
-            </div>
-
-            <div id="importError" class="error"></div>
-            <div id="importSuccess" class="success"></div>
-
-        </div>
-
-
         <!-- AKTIVITÄTEN -->
 
         <div class="card">
@@ -717,8 +601,8 @@
             </h2>
 
             <div id="activities">
-                <div class="loading">
-                    Laden...
+                <div class="empty-state">
+                    Noch keine Aktivitäten erstellt.
                 </div>
             </div>
 
@@ -784,41 +668,6 @@
         </button>
 
         <div id="passwordError" class="error"></div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     MODAL DATEN ANZEIGEN
-========================= -->
-
-<div id="dataModal" class="modal hidden">
-
-    <div class="modal-card modal-card-large">
-
-        <h2>
-            📊 Teilnehmer und Zeit
-        </h2>
-
-        <p class="description">
-            Übersicht der importierten Daten: Welcher Schüler hat wie lange an welcher Aktivität teilgenommen.
-        </p>
-
-        <div id="dataContent">
-            <div class="loading">
-                Laden...
-            </div>
-        </div>
-
-        <button
-            id="closeDataButton"
-            class="secondary"
-            style="width:100%; margin-top:20px;"
-        >
-            Schließen
-        </button>
 
     </div>
 
@@ -908,13 +757,6 @@ const dashboard =
     document.getElementById(
         "dashboard"
     );
-
-
-/* =====================================================
-   SPEICHERN VON IMPORTIERTEN DATEN
-===================================================== */
-
-let importedData = [];
 
 
 /* =====================================================
@@ -1384,200 +1226,369 @@ async function saveNewPassword() {
 
 
 /* =====================================================
-   DATEI-IMPORT
+   AKTIVITÄTEN
 ===================================================== */
 
 document
     .getElementById(
-        "importButton"
+        "createButton"
     )
     .addEventListener(
         "click",
-        triggerFileInput
-    );
-
-document
-    .getElementById(
-        "importFile"
-    )
-    .addEventListener(
-        "change",
-        handleFileImport
-    );
-
-document
-    .getElementById(
-        "viewDataButton"
-    )
-    .addEventListener(
-        "click",
-        openDataModal
-    );
-
-document
-    .getElementById(
-        "closeDataButton"
-    )
-    .addEventListener(
-        "click",
-        closeDataModal
+        createActivity
     );
 
 
-function triggerFileInput() {
+async function createActivity() {
 
-    document
-        .getElementById(
-            "importFile"
-        )
-        .click();
+    const name =
+        document
+            .getElementById(
+                "activityName"
+            )
+            .value.trim();
 
-}
+    const fileInput =
+        document
+            .getElementById(
+                "pdfFile"
+            );
 
+    const errorBox =
+        document
+            .getElementById(
+                "createError"
+            );
 
-function handleFileImport(event) {
+    errorBox.textContent = "";
 
-    const file = event.target.files[0];
+    if (!name) {
 
-    if (!file) return;
+        errorBox.textContent =
+            "Bitte geben Sie einen Namen ein.";
 
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-
-        try {
-
-            const csv = e.target.result;
-            const lines = csv.split('\n');
-            const data = [];
-
-            for (let i = 1; i < lines.length; i++) {
-
-                if (!lines[i].trim()) continue;
-
-                const parts = lines[i].split(',');
-
-                if (parts.length >= 3) {
-
-                    data.push({
-                        student: parts[0].trim(),
-                        activity: parts[1].trim(),
-                        time: parseInt(parts[2].trim()) || 0
-                    });
-
-                }
-
-            }
-
-            importedData = data;
-
-            const errorBox = document.getElementById("importError");
-            const successBox = document.getElementById("importSuccess");
-
-            errorBox.textContent = "";
-            successBox.textContent = `✓ ${data.length} Einträge erfolgreich importiert.`;
-
-        } catch (error) {
-
-            console.error("Import-Fehler:", error);
-
-            const errorBox = document.getElementById("importError");
-            errorBox.textContent = "Fehler beim Parsen der CSV-Datei.";
-
-        }
-
-    };
-
-    reader.readAsText(file);
-
-}
-
-
-function openDataModal() {
-
-    if (importedData.length === 0) {
-
-        document.getElementById("dataContent").innerHTML =
-            '<p style="color: #64748b;">Noch keine Daten importiert.</p>';
-
-    } else {
-
-        let html = `
-            <table class="participation-table">
-                <thead>
-                    <tr>
-                        <th>Schüler</th>
-                        <th>Aktivität</th>
-                        <th>Zeit (Minuten)</th>
-                        <th>Kategorie</th>
-                    </tr>
-                </thead>
-                <tbody>
-        `;
-
-        importedData.forEach(entry => {
-
-            let category = 'Kurz';
-            let badgeClass = 'short';
-
-            if (entry.time >= 30) {
-                category = 'Lang';
-                badgeClass = 'long';
-            } else if (entry.time >= 15) {
-                category = 'Mittel';
-                badgeClass = '';
-            }
-
-            html += `
-                <tr>
-                    <td>${entry.student}</td>
-                    <td>${entry.activity}</td>
-                    <td>${entry.time}</td>
-                    <td><span class="time-badge ${badgeClass}">${category}</span></td>
-                </tr>
-            `;
-
-        });
-
-        html += `
-                </tbody>
-            </table>
-        `;
-
-        document.getElementById("dataContent").innerHTML = html;
+        return;
 
     }
 
-    document
-        .getElementById(
-            "dataModal"
-        )
-        .classList
-        .remove("hidden");
+    if (!fileInput.files[0]) {
+
+        errorBox.textContent =
+            "Bitte wählen Sie eine PDF-Datei aus.";
+
+        return;
+
+    }
+
+    const button =
+        document.getElementById(
+            "createButton"
+        );
+
+    button.disabled = true;
+    button.textContent = "Wird erstellt...";
+
+    try {
+
+        const file = fileInput.files[0];
+        const fileName = `${Date.now()}_${file.name}`;
+
+        const { data, error: uploadError } =
+            await supabaseClient
+                .storage
+                .from("activities")
+                .upload(
+                    fileName,
+                    file
+                );
+
+        if (uploadError) {
+
+            errorBox.textContent =
+                "Fehler beim Hochladen der Datei.";
+
+            return;
+
+        }
+
+        const { data: insertData, error: insertError } =
+            await supabaseClient
+                .from("activities")
+                .insert({
+                    teacher_email: TEACHER_EMAIL,
+                    name: name,
+                    pdf_path: fileName,
+                    created_at: new Date().toISOString()
+                })
+                .select();
+
+        if (insertError) {
+
+            errorBox.textContent =
+                "Fehler beim Speichern der Aktivität.";
+
+            return;
+
+        }
+
+        document
+            .getElementById(
+                "activityName"
+            )
+            .value = "";
+
+        fileInput.value = "";
+
+        loadActivities();
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        errorBox.textContent =
+            "Ein Fehler ist aufgetreten.";
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Erstellen";
+
+    }
 
 }
 
 
-function closeDataModal() {
+async function loadActivities() {
 
-    document
-        .getElementById(
-            "dataModal"
-        )
-        .classList
-        .add("hidden");
+    const container =
+        document.getElementById(
+            "activities"
+        );
+
+    try {
+
+        const { data: activities, error } =
+            await supabaseClient
+                .from("activities")
+                .select("*")
+                .eq("teacher_email", TEACHER_EMAIL)
+                .order("created_at", { ascending: false });
+
+        if (error) {
+
+            container.innerHTML =
+                '<div class="empty-state">Fehler beim Laden der Aktivitäten.</div>';
+
+            return;
+
+        }
+
+        if (!activities || activities.length === 0) {
+
+            container.innerHTML =
+                '<div class="empty-state">Noch keine Aktivitäten erstellt.</div>';
+
+            return;
+
+        }
+
+        let html = "";
+
+        for (const activity of activities) {
+
+            const participantData = await getActivityParticipants(activity.id);
+
+            const participantsHtml =
+                participantData.length > 0
+                    ? participantData
+                        .map(p => `
+                            <div class="participant-row">
+                                <span class="participant-name">${p.student_name}</span>
+                                <span class="participant-time">${p.time_spent} Min</span>
+                            </div>
+                        `)
+                        .join("")
+                    : '<div class="empty-state" style="padding: 20px; margin: 0;">Keine Teilnehmer</div>';
+
+            const activityLink = `${window.location.origin}/student.html?activity_id=${activity.id}`;
+
+            html += `
+                <div class="activity-card">
+
+                    <div class="activity-top">
+
+                        <div>
+
+                            <h3 class="activity-title">
+                                📄 ${activity.name}
+                            </h3>
+
+                            <p class="activity-date">
+                                Erstellt: ${new Date(activity.created_at).toLocaleDateString("de-DE")}
+                            </p>
+
+                        </div>
+
+                        <div class="activity-actions">
+
+                            <button
+                                class="secondary"
+                                onclick="copyToClipboard('${activityLink}')"
+                            >
+                                🔗 Link kopieren
+                            </button>
+
+                            <button
+                                class="danger"
+                                onclick="deleteActivity('${activity.id}')"
+                            >
+                                🗑️ Löschen
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="link-container">
+
+                        <input
+                            type="text"
+                            value="${activityLink}"
+                            readonly
+                        >
+
+                        <button
+                            class="primary"
+                            onclick="copyToClipboard('${activityLink}')"
+                        >
+                            Kopieren
+                        </button>
+
+                    </div>
+
+                    <div style="margin-top: 25px;">
+
+                        <h3 style="margin: 0 0 15px;">
+                            👥 Teilnehmer
+                        </h3>
+
+                        ${participantsHtml}
+
+                    </div>
+
+                </div>
+            `;
+
+        }
+
+        container.innerHTML = html;
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        container.innerHTML =
+            '<div class="empty-state">Fehler beim Laden.</div>';
+
+    }
+
+}
+
+
+async function getActivityParticipants(activityId) {
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+                .from("participations")
+                .select("student_name, time_spent")
+                .eq("activity_id", activityId)
+                .order("time_spent", { ascending: false });
+
+        if (error) return [];
+
+        return data || [];
+
+    } catch (error) {
+
+        console.error(error);
+        return [];
+
+    }
+
+}
+
+
+function copyToClipboard(text) {
+
+    navigator.clipboard.writeText(text).then(() => {
+
+        const notification = document.createElement("div");
+        notification.className = "copy-success";
+        notification.textContent = "✓ Link kopiert!";
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+
+    });
+
+}
+
+
+async function deleteActivity(activityId) {
+
+    if (!confirm("Sind Sie sicher, dass Sie diese Aktivität löschen möchten?")) {
+        return;
+    }
+
+    try {
+
+        await supabaseClient
+            .from("activities")
+            .delete()
+            .eq("id", activityId);
+
+        await supabaseClient
+            .from("participations")
+            .delete()
+            .eq("activity_id", activityId);
+
+        loadActivities();
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Fehler beim Löschen der Aktivität.");
+
+    }
 
 }
 
 
 /* =====================================================
-   AKTIVITÄTEN LADEN
+   ECHTZEIT-UPDATES
 ===================================================== */
 
-async function loadActivities() {
+function subscribeToParticipations() {
 
-    // Placeholder-Funktion für zukünftige Integration
-    console.log("Aktivitäten werden geladen...");
+    supabaseClient
+        .channel("participations")
+        .on(
+            "postgres_changes",
+            { event: "*", schema: "public", table: "participations" },
+            () => {
+                loadActivities();
+            }
+        )
+        .subscribe();
 
 }
 
@@ -1587,6 +1598,7 @@ async function loadActivities() {
 ===================================================== */
 
 checkSession();
+subscribeToParticipations();
 
 </script>
 
