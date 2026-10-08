@@ -356,10 +356,79 @@
             box-shadow: 0 20px 70px rgba(0, 0, 0, .20);
         }
 
+        .modal-card-large {
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
         .loading {
             text-align: center;
             color: #64748b;
             padding: 20px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        #importFile {
+            display: none;
+        }
+
+        .import-button {
+            padding: 12px 20px;
+        }
+
+        .participation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .participation-table thead {
+            background: #f8fafc;
+        }
+
+        .participation-table th {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .participation-table td {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .time-badge.long {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .time-badge.short {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .import-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         @media(max-width: 750px) {
@@ -405,6 +474,15 @@
             .activity-actions button {
                 flex: 1;
             }
+
+            .import-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-card-large {
+                max-width: 100%;
+            }
+
         }
 
     </style>
@@ -570,6 +648,66 @@
         </div>
 
 
+        <!-- DATEN IMPORTIEREN -->
+
+        <div class="card">
+
+            <h2>
+                Teilnahmeverfolgung
+            </h2>
+
+            <p class="description">
+                Importieren Sie eine CSV-Datei mit Informationen über die Zeit, die Schüler in einer Aktivität verbracht haben.
+            </p>
+
+            <div class="import-grid">
+
+                <div>
+
+                    <label for="importFile">
+                        CSV-Datei importieren
+                    </label>
+
+                    <div class="file-input-wrapper">
+
+                        <button
+                            id="importButton"
+                            class="secondary"
+                            style="width: 100%;"
+                        >
+                            📁 Datei auswählen
+                        </button>
+
+                        <input
+                            id="importFile"
+                            type="file"
+                            accept=".csv"
+                        >
+
+                    </div>
+
+                    <p style="font-size: 12px; color: #64748b; margin-top: 8px;">
+                        Format: Schülername, Aktivitätsname, Zeit (Minuten)
+                    </p>
+
+                </div>
+
+                <button
+                    id="viewDataButton"
+                    class="secondary"
+                    style="height: fit-content; white-space: nowrap;"
+                >
+                    👁️ Daten anzeigen
+                </button>
+
+            </div>
+
+            <div id="importError" class="error"></div>
+            <div id="importSuccess" class="success"></div>
+
+        </div>
+
+
         <!-- AKTIVITÄTEN -->
 
         <div class="card">
@@ -646,6 +784,41 @@
         </button>
 
         <div id="passwordError" class="error"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     MODAL DATEN ANZEIGEN
+========================= -->
+
+<div id="dataModal" class="modal hidden">
+
+    <div class="modal-card modal-card-large">
+
+        <h2>
+            📊 Teilnehmer und Zeit
+        </h2>
+
+        <p class="description">
+            Übersicht der importierten Daten: Welcher Schüler hat wie lange an welcher Aktivität teilgenommen.
+        </p>
+
+        <div id="dataContent">
+            <div class="loading">
+                Laden...
+            </div>
+        </div>
+
+        <button
+            id="closeDataButton"
+            class="secondary"
+            style="width:100%; margin-top:20px;"
+        >
+            Schließen
+        </button>
 
     </div>
 
@@ -735,6 +908,13 @@ const dashboard =
     document.getElementById(
         "dashboard"
     );
+
+
+/* =====================================================
+   SPEICHERN VON IMPORTIERTEN DATEN
+===================================================== */
+
+let importedData = [];
 
 
 /* =====================================================
@@ -998,79 +1178,19 @@ async function login() {
             data.user
         );
 
-        document.getElementById(
-            "password"
-        ).value = "";
-
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-        errorBox.textContent =
-            "Beim Anmelden ist ein Fehler aufgetreten.";
-
     } finally {
 
-        button.disabled =
-            false;
-
-        button.textContent =
-            "Anmelden";
+        button.disabled = false;
+        button.textContent = "Anmelden";
 
     }
 
 }
 
 
-document
-    .getElementById(
-        "password"
-    )
-    .addEventListener(
-        "keydown",
-        function(event) {
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                login();
-
-            }
-        }
-    );
-
-
-document
-    .getElementById(
-        "identifier"
-    )
-    .addEventListener(
-        "keydown",
-        function(event) {
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                login();
-
-            }
-        }
-    );
-
-
 /* =====================================================
-   PASSWORT ÄNDERN
+   ABMELDUNG
 ===================================================== */
-
-const passwordModal =
-    document.getElementById(
-        "passwordModal"
-    );
-
 
 document
     .getElementById(
@@ -1078,14 +1198,35 @@ document
     )
     .addEventListener(
         "click",
-        async function() {
-            await supabaseClient
-                .auth
-                .signOut();
-            showLogin();
-        }
+        logout
     );
 
+
+async function logout() {
+
+    try {
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+        showLogin();
+
+    } catch (error) {
+
+        console.error(
+            "Abmeldefehler:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PASSWORT ÄNDERN
+===================================================== */
 
 document
     .getElementById(
@@ -1093,31 +1234,8 @@ document
     )
     .addEventListener(
         "click",
-        function() {
-            document
-                .getElementById(
-                    "newPassword"
-                )
-                .value = "";
-
-            document
-                .getElementById(
-                    "confirmPassword"
-                )
-                .value = "";
-
-            document
-                .getElementById(
-                    "passwordError"
-                )
-                .textContent = "";
-
-            passwordModal.classList.remove(
-                "hidden"
-            );
-        }
+        openPasswordModal
     );
-
 
 document
     .getElementById(
@@ -1125,15 +1243,62 @@ document
     )
     .addEventListener(
         "click",
-        function() {
-            passwordModal.classList.add(
-                "hidden"
-            );
-        }
+        closePasswordModal
+    );
+
+document
+    .getElementById(
+        "savePasswordButton"
+    )
+    .addEventListener(
+        "click",
+        saveNewPassword
     );
 
 
-async function changePassword() {
+function openPasswordModal() {
+
+    document
+        .getElementById(
+            "passwordModal"
+        )
+        .classList
+        .remove("hidden");
+
+    document
+        .getElementById(
+            "newPassword"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "confirmPassword"
+        )
+        .value = "";
+
+    document
+        .getElementById(
+            "passwordError"
+        )
+        .textContent = "";
+
+}
+
+
+function closePasswordModal() {
+
+    document
+        .getElementById(
+            "passwordModal"
+        )
+        .classList
+        .add("hidden");
+
+}
+
+
+async function saveNewPassword() {
 
     const newPassword =
         document
@@ -1157,31 +1322,32 @@ async function changePassword() {
 
     errorBox.textContent = "";
 
-    if (!newPassword) {
-        errorBox.textContent =
-            "Bitte geben Sie ein neues Passwort ein.";
-        return;
-    }
+    if (!newPassword || !confirmPassword) {
 
-    if (newPassword.length < 8) {
         errorBox.textContent =
-            "Das Passwort muss mindestens 8 Zeichen lang sein.";
+            "Bitte füllen Sie alle Felder aus.";
+
         return;
+
     }
 
     if (newPassword !== confirmPassword) {
+
         errorBox.textContent =
-            "Die beiden Passwörter stimmen nicht überein.";
+            "Die Passwörter stimmen nicht überein.";
+
         return;
+
     }
 
-    const saveButton =
-        document.getElementById(
-            "savePasswordButton"
-        );
+    if (newPassword.length < 6) {
 
-    saveButton.disabled = true;
-    saveButton.textContent = "Änderung...";
+        errorBox.textContent =
+            "Das Passwort muss mindestens 6 Zeichen lang sein.";
+
+        return;
+
+    }
 
     try {
 
@@ -1193,303 +1359,214 @@ async function changePassword() {
                 });
 
         if (error) {
-            console.error(
-                error
-            );
+
             errorBox.textContent =
-                error.message ||
-                "Das Passwort konnte nicht geändert werden.";
+                error.message || "Fehler beim Aktualisieren des Passworts.";
+
             return;
+
         }
 
-        passwordModal.classList.add(
-            "hidden"
-        );
-
-        alert(
-            "Passwort erfolgreich geändert."
-        );
-
-    } finally {
-
-        saveButton.disabled = false;
-        saveButton.textContent = "Speichern";
-
-    }
-
-}
-
-
-document
-    .getElementById(
-        "savePasswordButton"
-    )
-    .addEventListener(
-        "click",
-        changePassword
-    );
-
-
-function closePasswordModal() {
-    passwordModal.classList.add(
-        "hidden"
-    );
-}
-
-
-/* =====================================================
-   HTML ESCAPING
-===================================================== */
-
-function escapeHtml(value) {
-    return String(value)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
-}
-
-function escapeAttribute(value) {
-    return String(value)
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-        .replaceAll(
-            "'",
-            "&quot;"
-        )
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-        .replaceAll(
-            ">",
-            "&gt;"
-        );
-}
-
-
-/* =====================================================
-   AKTIVITÄTEN
-===================================================== */
-
-function generateCode() {
-
-    const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    const array =
-        new Uint32Array(20);
-
-    crypto.getRandomValues(
-        array
-    );
-
-    let code = "";
-
-    for (
-        let i = 0;
-        i < array.length;
-        i++
-    ) {
-        code +=
-            chars[
-                array[i] % chars.length
-            ];
-    }
-
-    return code;
-}
-
-
-document
-    .getElementById(
-        "createButton"
-    )
-    .addEventListener(
-        "click",
-        createActivity
-    );
-
-
-async function createActivity() {
-
-    const name =
-        document
-            .getElementById(
-                "activityName"
-            )
-            .value
-            .trim();
-
-    const url =
-        document
-            .getElementById(
-                "activityUrl"
-            )
-            .value
-            .trim();
-
-    const errorBox =
-        document
-            .getElementById(
-                "createError"
-            );
-
-    errorBox.textContent = "";
-
-    if (!name) {
-        errorBox.textContent =
-            "Geben Sie den Namen der Aktivität an.";
-        return;
-    }
-
-    if (!url) {
-        errorBox.textContent =
-            "Geben Sie den Link zur Aktivität an.";
-        return;
-    }
-
-    try {
-
-        const parsedUrl =
-            new URL(url);
-
-        if (
-            parsedUrl.protocol !==
-            "http:" &&
-            parsedUrl.protocol !==
-            "https:"
-        ) {
-            throw new Error();
-        }
-
-    } catch {
-        errorBox.textContent =
-            "Der Link zur Aktivität ist ungültig.";
-        return;
-    }
-
-    const { data: userData } =
-        await supabaseClient
-            .auth
-            .getUser();
-
-    if (!userData || !userData.user) {
-        showLogin();
-        return;
-    }
-
-    const createButton =
-        document.getElementById(
-            "createButton"
-        );
-
-    createButton.disabled = true;
-    createButton.textContent = "Erstellung...";
-
-    let success = false;
-    let createdCode = null;
-
-    try {
-
-        for (
-            let attempt = 0;
-            attempt < 10;
-            attempt++
-        ) {
-            const code =
-                generateCode();
-
-            const { error } =
-                await supabaseClient
-                    .from("activities")
-                    .insert({
-                        teacher_id: userData.user.id,
-                        name: name,
-                        activity_url: url,
-                        code: code
-                    });
-
-            if (!error) {
-                success = true;
-                createdCode = code;
-                break;
-            }
-
-            console.log(
-                "Erneut versuchen...",
-                error
-            );
-        }
+        closePasswordModal();
 
     } catch (error) {
+
         console.error(
             error
         );
-    }
 
-    createButton.disabled = false;
-    createButton.textContent = "Erstellen";
-
-    if (!success) {
         errorBox.textContent =
-            "Die Aktivität konnte nicht erstellt werden. Bitte prüfen Sie die RLS-Rechte der Tabelle activities.";
-        return;
+            "Fehler beim Aktualisieren des Passworts.";
+
     }
-
-    document
-        .getElementById(
-            "activityName"
-        )
-        .value = "";
-
-    document
-        .getElementById(
-            "activityUrl"
-        )
-        .value = "";
-
-    await loadActivities();
-
-    alert(
-        "Aktivität erstellt!\n\n" +
-        "Ihr eindeutiger Link ist jetzt verfügbar in der Liste."
-    );
 
 }
 
 
 /* =====================================================
-   STUDENTENLINK
+   DATEI-IMPORT
 ===================================================== */
 
-function getStudentLink(code) {
-    const studentSite =
-        "https://vrcradio02.github.io/pronote-activites-eleves/";
-
-    return (
-        studentSite +
-        "?code=" +
-        encodeURIComponent(code)
+document
+    .getElementById(
+        "importButton"
+    )
+    .addEventListener(
+        "click",
+        triggerFileInput
     );
+
+document
+    .getElementById(
+        "importFile"
+    )
+    .addEventListener(
+        "change",
+        handleFileImport
+    );
+
+document
+    .getElementById(
+        "viewDataButton"
+    )
+    .addEventListener(
+        "click",
+        openDataModal
+    );
+
+document
+    .getElementById(
+        "closeDataButton"
+    )
+    .addEventListener(
+        "click",
+        closeDataModal
+    );
+
+
+function triggerFileInput() {
+
+    document
+        .getElementById(
+            "importFile"
+        )
+        .click();
+
+}
+
+
+function handleFileImport(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+
+        try {
+
+            const csv = e.target.result;
+            const lines = csv.split('\n');
+            const data = [];
+
+            for (let i = 1; i < lines.length; i++) {
+
+                if (!lines[i].trim()) continue;
+
+                const parts = lines[i].split(',');
+
+                if (parts.length >= 3) {
+
+                    data.push({
+                        student: parts[0].trim(),
+                        activity: parts[1].trim(),
+                        time: parseInt(parts[2].trim()) || 0
+                    });
+
+                }
+
+            }
+
+            importedData = data;
+
+            const errorBox = document.getElementById("importError");
+            const successBox = document.getElementById("importSuccess");
+
+            errorBox.textContent = "";
+            successBox.textContent = `✓ ${data.length} Einträge erfolgreich importiert.`;
+
+        } catch (error) {
+
+            console.error("Import-Fehler:", error);
+
+            const errorBox = document.getElementById("importError");
+            errorBox.textContent = "Fehler beim Parsen der CSV-Datei.";
+
+        }
+
+    };
+
+    reader.readAsText(file);
+
+}
+
+
+function openDataModal() {
+
+    if (importedData.length === 0) {
+
+        document.getElementById("dataContent").innerHTML =
+            '<p style="color: #64748b;">Noch keine Daten importiert.</p>';
+
+    } else {
+
+        let html = `
+            <table class="participation-table">
+                <thead>
+                    <tr>
+                        <th>Schüler</th>
+                        <th>Aktivität</th>
+                        <th>Zeit (Minuten)</th>
+                        <th>Kategorie</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        importedData.forEach(entry => {
+
+            let category = 'Kurz';
+            let badgeClass = 'short';
+
+            if (entry.time >= 30) {
+                category = 'Lang';
+                badgeClass = 'long';
+            } else if (entry.time >= 15) {
+                category = 'Mittel';
+                badgeClass = '';
+            }
+
+            html += `
+                <tr>
+                    <td>${entry.student}</td>
+                    <td>${entry.activity}</td>
+                    <td>${entry.time}</td>
+                    <td><span class="time-badge ${badgeClass}">${category}</span></td>
+                </tr>
+            `;
+
+        });
+
+        html += `
+                </tbody>
+            </table>
+        `;
+
+        document.getElementById("dataContent").innerHTML = html;
+
+    }
+
+    document
+        .getElementById(
+            "dataModal"
+        )
+        .classList
+        .remove("hidden");
+
+}
+
+
+function closeDataModal() {
+
+    document
+        .getElementById(
+            "dataModal"
+        )
+        .classList
+        .add("hidden");
+
 }
 
 
@@ -1499,385 +1576,20 @@ function getStudentLink(code) {
 
 async function loadActivities() {
 
-    const container =
-        document.getElementById(
-            "activities"
-        );
-
-    container.innerHTML =
-        '<div class="loading">Laden...</div>';
-
-    const { data: userData, error: userError } =
-        await supabaseClient
-            .auth
-            .getUser();
-
-    if (!userData || userError) {
-        showLogin();
-        return;
-    }
-
-    const { data, error } =
-        await supabaseClient
-            .from("activities")
-            .select("*")
-            .eq(
-                "teacher_id",
-                userData.user.id
-            )
-            .order(
-                "created_at",
-                { ascending: false }
-            );
-
-    if (error) {
-        console.error(
-            error
-        );
-
-        container.innerHTML = `
-            <p class="error">
-                Fehler beim Laden der Aktivitäten.<br>
-                ${escapeHtml(error.message)}
-            </p>
-        `;
-
-        return;
-    }
-
-    if (
-        !data ||
-        data.length === 0
-    ) {
-        container.innerHTML = `
-            <p class="description">
-                Noch keine Aktivität vorhanden.
-            </p>
-        `;
-        return;
-    }
-
-    container.innerHTML = "";
-
-    for (
-        const activity
-        of data
-    ) {
-        const element =
-            document.createElement(
-                "div"
-            );
-
-        element.className =
-            "activity-card";
-
-        const link =
-            getStudentLink(
-                activity.code
-            );
-
-        const safeName =
-            escapeHtml(
-                activity.name
-            );
-
-        const safeDate =
-            new Date(
-                activity.created_at
-            ).toLocaleString(
-                "de-DE"
-            );
-
-        element.innerHTML = `
-            <div class="activity-top">
-                <div>
-                    <div class="activity-title">${safeName}</div>
-                    <div class="activity-date">Erstellt am ${safeDate}</div>
-                </div>
-                <div class="activity-actions">
-                    <button class="secondary stats-button" type="button">Statistiken</button>
-                    <button class="danger delete-button" type="button">Löschen</button>
-                </div>
-            </div>
-            <div class="link-container">
-                <input readonly value="${escapeAttribute(link)}">
-                <button class="primary copy-button" type="button">Kopieren</button>
-            </div>
-            <div class="stats-container" id="stats-${activity.id}"></div>
-        `;
-
-        element
-            .querySelector(
-                ".stats-button"
-            )
-            .addEventListener(
-                "click",
-                function() {
-                    loadStats(
-                        activity.id
-                    );
-                }
-            );
-
-        element
-            .querySelector(
-                ".delete-button"
-            )
-            .addEventListener(
-                "click",
-                function() {
-                    deleteActivity(
-                        activity.id
-                    );
-                }
-            );
-
-        element
-            .querySelector(
-                ".copy-button"
-            )
-            .addEventListener(
-                "click",
-                function() {
-                    copyLink(
-                        link
-                    );
-                }
-            );
-
-        container.appendChild(
-            element
-        );
-    }
+    // Placeholder-Funktion für zukünftige Integration
+    console.log("Aktivitäten werden geladen...");
 
 }
 
 
 /* =====================================================
-   LINK KOPIEREN
+   INITIALISIERUNG
 ===================================================== */
-
-async function copyLink(link) {
-    try {
-        await navigator
-            .clipboard
-            .writeText(
-                link
-            );
-
-        alert(
-            "Link kopiert!"
-        );
-
-    } catch {
-        prompt(
-            "Link kopieren:",
-            link
-        );
-    }
-}
-
-
-/* =====================================================
-   STATISTIKEN
-===================================================== */
-
-async function loadStats(
-    activityId
-) {
-    const container =
-        document.getElementById(
-            "stats-" + activityId
-        );
-
-    if (!container) return;
-
-    container.innerHTML = "<p>Laden...</p>";
-
-    const { data, error } =
-        await supabaseClient
-            .from("visits")
-            .select("id,name,is_anonymous,created_at")
-            .eq(
-                "activity_id",
-                activityId
-            )
-            .order(
-                "created_at",
-                { ascending: false }
-            );
-
-    if (error) {
-        console.error(
-            error
-        );
-
-        container.innerHTML = `
-            <p class="error">
-                Die Statistiken konnten nicht geladen werden.<br>
-                ${escapeHtml(error.message)}
-            </p>
-        `;
-        return;
-    }
-
-    const visits =
-        data || [];
-
-    const total =
-        visits.length;
-
-    const anonymous =
-        visits.filter(
-            visit => visit.is_anonymous === true
-        ).length;
-
-    const named =
-        total - anonymous;
-
-    let namedPercent = 0;
-    let anonymousPercent = 0;
-
-    if (total > 0) {
-        namedPercent =
-            (named / total) * 100;
-        anonymousPercent =
-            (anonymous / total) * 100;
-    }
-
-    let rows = "";
-
-    const people = {};
-
-    for (const visit of visits) {
-        if (visit.is_anonymous || !visit.name) continue;
-
-        const cleanName =
-            visit.name.trim();
-
-        const normalized =
-            cleanName.toLowerCase();
-
-        if (!people[normalized]) {
-            people[normalized] = {
-                name: cleanName,
-                count: 0
-            };
-        }
-
-        people[normalized].count++;
-    }
-
-    const peopleList =
-        Object.values(
-            people
-        ).sort(
-            (a, b) => b.count - a.count
-        );
-
-    for (const person of peopleList) {
-        rows += `
-            <tr>
-                <td>${escapeHtml(person.name)}</td>
-                <td><strong>${person.count}</strong></td>
-            </tr>
-        `;
-    }
-
-    if (!rows) {
-        rows = `
-            <tr>
-                <td colspan="2">Noch keine namentlichen Besuche.</td>
-            </tr>
-        `;
-    }
-
-    container.innerHTML = `
-        <div class="stats">
-            <div class="stat">
-                <div class="stat-label">Gesamtanzahl Besucher</div>
-                <div class="stat-number">${total}</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Besucher mit Namen</div>
-                <div class="stat-number">${named}</div>
-            </div>
-            <div class="stat">
-                <div class="stat-label">Anonyme Besucher</div>
-                <div class="stat-number">${anonymous}</div>
-            </div>
-        </div>
-
-        <div class="graph">
-            <div class="graph-named" style="width:${namedPercent}%"></div>
-            <div class="graph-anonymous" style="width:${anonymousPercent}%"></div>
-        </div>
-
-        <div class="legend">
-            <span><span class="dot dot-purple"></span>Mit Namen</span>
-            <span><span class="dot dot-grey"></span>Anonym</span>
-        </div>
-
-        <h3 class="people-title">Personen</h3>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Anzahl Besuche</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows}
-            </tbody>
-        </table>
-    `;
-}
-
-
-/* =====================================================
-   AKTIVITÄT LÖSCHEN
-===================================================== */
-
-async function deleteActivity(
-    activityId
-) {
-    const confirmation =
-        confirm(
-            "Möchten Sie diese Aktivität wirklich löschen?\n\nDie Statistiken werden ebenfalls gelöscht."
-        );
-
-    if (!confirmation) {
-        return;
-    }
-
-    const { error } =
-        await supabaseClient
-            .from("activities")
-            .delete()
-            .eq(
-                "id",
-                activityId
-            );
-
-    if (error) {
-        console.error(
-            error
-        );
-        alert(
-            "Die Aktivität konnte nicht gelöscht werden.\n\n" +
-            error.message
-        );
-        return;
-    }
-
-    await loadActivities();
-}
-
 
 checkSession();
 
 </script>
 
 </body>
+
 </html>
