@@ -1011,50 +1011,169 @@
         errorBox.textContent = "";
 
 
-        if (!name || !url) {
+        // Vérification nom
+
+        if (!name) {
 
             errorBox.textContent =
-                "Remplis tous les champs.";
+                "Indique le nom de l'activité.";
 
             return;
 
         }
 
 
-        const code =
-            generateCode();
+        // Vérification URL
+
+        if (!url) {
+
+            errorBox.textContent =
+                "Indique le lien de l'activité.";
+
+            return;
+
+        }
 
 
-        const { data, error } =
+        try {
+
+            new URL(url);
+
+        } catch {
+
+            errorBox.textContent =
+                "Le lien de l'activité n'est pas valide.";
+
+            return;
+
+        }
+
+
+        // Utilisateur
+
+        const {
+            data: {
+                user
+            }
+        } =
             await supabaseClient
-                .from("activities")
-                .insert([
-                    {
-                        name: name,
-                        url: url,
-                        code: code
-                    }
-                ])
-                .select();
+                .auth
+                .getUser();
 
 
-        if (error) {
+        if (!user) {
 
-            console.error(error);
-
-            errorBox.textContent =
-                "Erreur lors de la création.";
+            showLogin();
 
             return;
 
         }
 
+
+        // Désactiver bouton
+
+        const createButton =
+            document.getElementById(
+                "createButton"
+            );
+
+
+        createButton.disabled =
+            true;
+
+
+        createButton.textContent =
+            "Création...";
+
+
+        let success = false;
+
+        let createdCode = null;
+
+
+        /*
+         * On tente plusieurs codes.
+         *
+         * Le champ "code" est UNIQUE
+         * dans Supabase.
+         */
+
+        for (
+            let attempt = 0;
+            attempt < 5;
+            attempt++
+        ) {
+
+            const code =
+                generateCode();
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("activities")
+                    .insert({
+
+                        teacher_id:
+                            user.id,
+
+                        name:
+                            name,
+
+                        activity_url:
+                            url,
+
+                        code:
+                            code
+
+                    });
+
+
+            if (!error) {
+
+                success = true;
+
+                createdCode =
+                    code;
+
+                break;
+
+            }
+
+
+            console.log(
+                "Nouvel essai de code..."
+            );
+
+        }
+
+
+        createButton.disabled =
+            false;
+
+        createButton.textContent =
+            "Créer";
+
+
+        if (!success) {
+
+            errorBox.textContent =
+                "Impossible de créer l'activité.";
+
+            return;
+
+        }
+
+
+        // Nettoyage
 
         document
             .getElementById(
                 "activityName"
             )
             .value = "";
+
 
         document
             .getElementById(
@@ -1063,7 +1182,41 @@
             .value = "";
 
 
-        loadActivities();
+        // Recharger
+
+        await loadActivities();
+
+
+        alert(
+            "Activité créée !\n\n" +
+            "Code : " +
+            createdCode
+        );
+
+    }
+
+
+    // ==================================================
+    // LIEN ELEVE
+    // ==================================================
+
+    function getStudentLink(code) {
+
+        /*
+         * TON SITE ELEVE
+         */
+
+        const studentSite =
+            "https://vrcradio02.github.io/pronote-activites-eleves/";
+
+
+        return (
+            studentSite +
+            "?code=" +
+            encodeURIComponent(
+                code
+            )
+        );
 
     }
 
@@ -1074,121 +1227,178 @@
 
     async function loadActivities() {
 
-        const activitiesBox =
+        const container =
             document.getElementById(
                 "activities"
             );
 
 
-        const { data, error } =
+        container.innerHTML =
+            "Chargement...";
+
+
+        const {
+            data,
+            error
+        } =
             await supabaseClient
                 .from("activities")
-                .select("*");
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending:
+                            false
+                    }
+                );
 
 
         if (error) {
 
             console.error(error);
 
-            activitiesBox.innerHTML =
-                "Erreur lors du chargement.";
+            container.innerHTML =
+                "<p>Erreur de chargement.</p>";
 
             return;
 
         }
 
 
-        if (data.length === 0) {
+        if (!data || data.length === 0) {
 
-            activitiesBox.innerHTML =
-                "Aucune activité créée.";
+            container.innerHTML = `
+
+                <p class="description">
+
+                    Aucune activité créée pour le moment.
+
+                </p>
+
+            `;
 
             return;
 
         }
 
 
-        let html = "";
+        container.innerHTML = "";
 
 
-        for (let i = 0; i < data.length; i++) {
+        for (
+            const activity
+            of data
+        ) {
 
-            const activity = data[i];
+            const element =
+                document.createElement(
+                    "div"
+                );
 
-            html += `
 
-                <div class="activity-card">
+            element.className =
+                "activity-card";
 
-                    <div class="activity-top">
 
-                        <div>
+            const link =
+                getStudentLink(
+                    activity.code
+                );
 
-                            <div class="activity-title">
-                                ${activity.name}
-                            </div>
 
-                            <div class="activity-date">
-                                Code : ${activity.code}
-                            </div>
+            element.innerHTML = `
+
+                <div class="activity-top">
+
+                    <div>
+
+                        <div class="activity-title">
+
+                            ${escapeHtml(
+                                activity.name
+                            )}
 
                         </div>
 
-                        <div class="activity-actions">
+                        <div class="activity-date">
 
-                            <button
-                                class="secondary"
-                                onclick="copyCode('${activity.code}')"
-                            >
-                                📋 Copier code
-                            </button>
-
-                            <button
-                                class="danger"
-                                onclick="deleteActivity(${activity.id})"
-                            >
-                                🗑️ Supprimer
-                            </button>
+                            Créée le
+                            ${new Date(
+                                activity.created_at
+                            ).toLocaleString(
+                                "fr-FR"
+                            )}
 
                         </div>
 
                     </div>
 
-                    <div class="link-container">
 
-                        <input
-                            type="text"
-                            value="${activity.url}"
-                            readonly
-                        >
+                    <div class="activity-actions">
 
                         <button
-                            class="primary"
-                            onclick="copyLink('${activity.url}')"
+                            class="secondary"
+                            onclick="loadStats(
+                                '${activity.id}'
+                            )"
                         >
-                            Copier le lien
+
+                            📊 Statistiques
+
+                        </button>
+
+
+                        <button
+                            class="danger"
+                            onclick="deleteActivity(
+                                '${activity.id}'
+                            )"
+                        >
+
+                            Supprimer
+
                         </button>
 
                     </div>
 
                 </div>
 
+
+                <div class="link-container">
+
+                    <input
+                        readonly
+                        value="${link}"
+                    >
+
+                    <button
+                        class="primary"
+                        onclick="copyLink(
+                            '${escapeAttribute(
+                                link
+                            )}'
+                        )"
+                    >
+
+                        Copier
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="stats-${activity.id}"
+                ></div>
+
             `;
 
+
+            container.appendChild(
+                element
+            );
+
         }
-
-
-        activitiesBox.innerHTML = html;
-
-    }
-
-
-    // ==================================================
-    // COPIER CODE
-    // ==================================================
-
-    function copyCode(code) {
-
-        navigator.clipboard.writeText(code);
 
     }
 
@@ -1197,9 +1407,386 @@
     // COPIER LIEN
     // ==================================================
 
-    function copyLink(url) {
+    async function copyLink(link) {
 
-        navigator.clipboard.writeText(url);
+        try {
+
+            await navigator
+                .clipboard
+                .writeText(link);
+
+
+            alert(
+                "Lien copié !"
+            );
+
+        } catch {
+
+            alert(
+                "Impossible de copier automatiquement le lien."
+            );
+
+        }
+
+    }
+
+
+    // ==================================================
+    // STATISTIQUES
+    // ==================================================
+
+    async function loadStats(
+        activityId
+    ) {
+
+        const container =
+            document.getElementById(
+                "stats-" +
+                activityId
+            );
+
+
+        container.innerHTML =
+            "<p>Chargement...</p>";
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("visits")
+                .select(
+                    "id,name,is_anonymous,created_at"
+                )
+                .eq(
+                    "activity_id",
+                    activityId
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending:
+                            false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            container.innerHTML =
+                "<p>Impossible de charger les statistiques.</p>";
+
+            return;
+
+        }
+
+
+        const visits =
+            data || [];
+
+
+        // ===========================================
+        // COMPTEURS
+        // ===========================================
+
+        const total =
+            visits.length;
+
+
+        const anonymous =
+            visits.filter(
+                visit =>
+                    visit.is_anonymous
+            ).length;
+
+
+        const named =
+            total -
+            anonymous;
+
+
+        // ===========================================
+        // GROUPEMENT DES NOMS
+        // ===========================================
+
+        const people = {};
+
+
+        for (
+            const visit
+            of visits
+        ) {
+
+            if (
+                visit.is_anonymous ||
+                !visit.name
+            ) {
+
+                continue;
+
+            }
+
+
+            const normalized =
+                visit.name
+                    .trim()
+                    .toLowerCase();
+
+
+            if (
+                !people[
+                    normalized
+                ]
+            ) {
+
+                people[
+                    normalized
+                ] = {
+
+                    name:
+                        visit.name.trim(),
+
+                    count:
+                        0
+
+                };
+
+            }
+
+
+            people[
+                normalized
+            ].count++;
+
+        }
+
+
+        const peopleList =
+            Object.values(
+                people
+            ).sort(
+                (a, b) =>
+                    b.count -
+                    a.count
+            );
+
+
+        // ===========================================
+        // POURCENTAGES
+        // ===========================================
+
+        let namedPercent = 0;
+        let anonymousPercent = 0;
+
+        if (total > 0) {
+
+            namedPercent =
+                (named / total) *
+                100;
+
+
+            anonymousPercent =
+                (anonymous / total) *
+                100;
+
+        }
+
+
+        // ===========================================
+        // TABLEAU
+        // ===========================================
+
+        let rows = "";
+
+
+        for (
+            const person
+            of peopleList
+        ) {
+
+            rows += `
+
+                <tr>
+
+                    <td>
+                        ${escapeHtml(
+                            person.name
+                        )}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${person.count}
+                        </strong>
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+
+        if (!rows) {
+
+            rows = `
+
+                <tr>
+
+                    <td colspan="2">
+
+                        Aucune visite nominative.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+
+        // ===========================================
+        // AFFICHAGE
+        // ===========================================
+
+        container.innerHTML = `
+
+            <div class="stats">
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+
+                        Total des visites
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        ${total}
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+
+                        Visites avec nom
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        ${named}
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat">
+
+                    <div class="stat-label">
+
+                        Visites anonymes
+
+                    </div>
+
+                    <div class="stat-number">
+
+                        ${anonymous}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="graph">
+
+                <div
+                    class="graph-named"
+                    style="width:${namedPercent}%"
+                ></div>
+
+                <div
+                    class="graph-anonymous"
+                    style="width:${anonymousPercent}%"
+                ></div>
+
+            </div>
+
+
+            <div class="legend">
+
+                <span>
+
+                    <span
+                        class="dot dot-purple"
+                    ></span>
+
+                    Avec nom
+
+                </span>
+
+
+                <span>
+
+                    <span
+                        class="dot dot-grey"
+                    ></span>
+
+                    Anonyme
+
+                </span>
+
+            </div>
+
+
+            <h3 class="people-title">
+
+                👥 Personnes
+
+            </h3>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Nom
+                        </th>
+
+                        <th>
+                            Nombre de visites
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${rows}
+
+                </tbody>
+
+            </table>
+
+        `;
 
     }
 
@@ -1208,18 +1795,43 @@
     // SUPPRIMER ACTIVITE
     // ==================================================
 
-    async function deleteActivity(id) {
+    async function deleteActivity(
+        activityId
+    ) {
 
-        const { data, error } =
+        const confirmation =
+            confirm(
+                "Supprimer cette activité ?\n\n" +
+                "Toutes ses statistiques seront également supprimées."
+            );
+
+
+        if (!confirmation) {
+
+            return;
+
+        }
+
+
+        const {
+            error
+        } =
             await supabaseClient
                 .from("activities")
                 .delete()
-                .eq("id", id);
+                .eq(
+                    "id",
+                    activityId
+                );
 
 
         if (error) {
 
             console.error(error);
+
+            alert(
+                "Impossible de supprimer l'activité."
+            );
 
             return;
 
@@ -1232,12 +1844,66 @@
 
 
     // ==================================================
-    // VERROUILLE SUR CHARGEMENT
+    // SECURITE AFFICHAGE HTML
+    // ==================================================
+
+    function escapeHtml(value) {
+
+        return String(value)
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                "'",
+                "&quot;"
+            )
+
+            .replaceAll(
+                '"',
+                "&#039;"
+            );
+
+    }
+
+
+    function escapeAttribute(value) {
+
+        return String(value)
+
+            .replaceAll(
+                "\\",
+                "\\\\"
+            )
+
+            .replaceAll(
+                "'",
+                "\\'"
+            );
+
+    }
+
+
+    // ==================================================
+    // DEMARRAGE
     // ==================================================
 
     checkSession();
 
 </script>
+
 
 </body>
 
