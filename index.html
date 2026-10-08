@@ -272,22 +272,6 @@
             margin-top: 8px;
         }
 
-        .participant-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .participant-name {
-            font-weight: 500;
-        }
-
-        .participant-time {
-            color: #4f46e5;
-            font-weight: bold;
-        }
-
         .graph {
             margin-top: 20px;
             height: 25px;
@@ -330,6 +314,28 @@
             background: #94a3b8;
         }
 
+        .people-title {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            color: #64748b;
+            font-size: 14px;
+        }
+
         .modal {
             position: fixed;
             inset: 0;
@@ -354,34 +360,6 @@
             text-align: center;
             color: #64748b;
             padding: 20px;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: #94a3b8;
-            padding: 40px 20px;
-        }
-
-        .copy-success {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #16a34a;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
         }
 
         @media(max-width: 750px) {
@@ -543,8 +521,8 @@
             </h2>
 
             <p class="description">
-                Geben Sie der Aktivität einen Namen und laden Sie eine PDF-Datei hoch.
-                Die Schüler erhalten einen personalisierten Link zum Öffnen des PDFs.
+                Geben Sie der Aktivität einen Namen und
+                fügen Sie den Link zur Aktivität ein.
             </p>
 
             <div class="create-grid">
@@ -566,14 +544,14 @@
 
                 <div>
 
-                    <label for="pdfFile">
-                        PDF-Datei
+                    <label for="activityUrl">
+                        Link zur Aktivität
                     </label>
 
                     <input
-                        id="pdfFile"
-                        type="file"
-                        accept=".pdf"
+                        id="activityUrl"
+                        type="url"
+                        placeholder="https://..."
                     >
 
                 </div>
@@ -601,8 +579,8 @@
             </h2>
 
             <div id="activities">
-                <div class="empty-state">
-                    Noch keine Aktivitäten erstellt.
+                <div class="loading">
+                    Laden...
                 </div>
             </div>
 
@@ -720,21 +698,12 @@ if (
 
 }
 
-
-/* =====================================================
-   SUPABASE
-===================================================== */
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
 
-
-/* =====================================================
-   BENUTZERIDENTIFIKATIONEN
-===================================================== */
 
 const TEACHER_IDENTIFIER =
     "herr.lamari";
@@ -743,25 +712,6 @@ const TEACHER_IDENTIFIER =
 const TEACHER_EMAIL =
     "herr.lamari@prof.pronote-activites.local";
 
-
-/* =====================================================
-   ELEMENTE
-===================================================== */
-
-const loginPage =
-    document.getElementById(
-        "loginPage"
-    );
-
-const dashboard =
-    document.getElementById(
-        "dashboard"
-    );
-
-
-/* =====================================================
-   ANZEIGE
-===================================================== */
 
 function showLogin() {
 
@@ -774,7 +724,6 @@ function showLogin() {
     );
 
 }
-
 
 function showDashboard(user) {
 
@@ -795,11 +744,6 @@ function showDashboard(user) {
 
 }
 
-
-/* =====================================================
-   SITZUNG
-===================================================== */
-
 async function checkSession() {
 
     try {
@@ -811,7 +755,6 @@ async function checkSession() {
             await supabaseClient
                 .auth
                 .getSession();
-
 
         if (error) {
 
@@ -825,7 +768,6 @@ async function checkSession() {
             return;
 
         }
-
 
         if (data.session) {
 
@@ -867,21 +809,6 @@ async function checkSession() {
 
 }
 
-
-/* =====================================================
-   ANMELDUNG
-===================================================== */
-
-document
-    .getElementById(
-        "loginButton"
-    )
-    .addEventListener(
-        "click",
-        login
-    );
-
-
 async function login() {
 
     const identifier =
@@ -892,7 +819,6 @@ async function login() {
             .value
             .trim();
 
-
     const password =
         document
             .getElementById(
@@ -900,16 +826,13 @@ async function login() {
             )
             .value;
 
-
     const errorBox =
         document
             .getElementById(
                 "loginError"
             );
 
-
     errorBox.textContent = "";
-
 
     if (
         !identifier ||
@@ -922,7 +845,6 @@ async function login() {
         return;
 
     }
-
 
     if (
         identifier.toLowerCase()
@@ -937,19 +859,16 @@ async function login() {
 
     }
 
-
     const button =
         document.getElementById(
             "loginButton"
         );
-
 
     button.disabled =
         true;
 
     button.textContent =
         "Anmeldung...";
-
 
     try {
 
@@ -969,7 +888,6 @@ async function login() {
 
                 });
 
-
         if (error) {
 
             console.error(
@@ -985,7 +903,6 @@ async function login() {
 
         }
 
-
         if (
             !data ||
             !data.user
@@ -997,7 +914,6 @@ async function login() {
             return;
 
         }
-
 
         if (
             data.user.email
@@ -1029,10 +945,14 @@ async function login() {
 
 }
 
-
-/* =====================================================
-   ABMELDUNG
-===================================================== */
+document
+    .getElementById(
+        "loginButton"
+    )
+    .addEventListener(
+        "click",
+        login
+    );
 
 document
     .getElementById(
@@ -1042,7 +962,6 @@ document
         "click",
         logout
     );
-
 
 async function logout() {
 
@@ -1064,11 +983,6 @@ async function logout() {
     }
 
 }
-
-
-/* =====================================================
-   PASSWORT ÄNDERN
-===================================================== */
 
 document
     .getElementById(
@@ -1096,7 +1010,6 @@ document
         "click",
         saveNewPassword
     );
-
 
 function openPasswordModal() {
 
@@ -1127,7 +1040,6 @@ function openPasswordModal() {
 
 }
 
-
 function closePasswordModal() {
 
     document
@@ -1138,7 +1050,6 @@ function closePasswordModal() {
         .add("hidden");
 
 }
-
 
 async function saveNewPassword() {
 
@@ -1224,142 +1135,6 @@ async function saveNewPassword() {
 
 }
 
-
-/* =====================================================
-   AKTIVITÄTEN
-===================================================== */
-
-document
-    .getElementById(
-        "createButton"
-    )
-    .addEventListener(
-        "click",
-        createActivity
-    );
-
-
-async function createActivity() {
-
-    const name =
-        document
-            .getElementById(
-                "activityName"
-            )
-            .value.trim();
-
-    const fileInput =
-        document
-            .getElementById(
-                "pdfFile"
-            );
-
-    const errorBox =
-        document
-            .getElementById(
-                "createError"
-            );
-
-    errorBox.textContent = "";
-
-    if (!name) {
-
-        errorBox.textContent =
-            "Bitte geben Sie einen Namen ein.";
-
-        return;
-
-    }
-
-    if (!fileInput.files[0]) {
-
-        errorBox.textContent =
-            "Bitte wählen Sie eine PDF-Datei aus.";
-
-        return;
-
-    }
-
-    const button =
-        document.getElementById(
-            "createButton"
-        );
-
-    button.disabled = true;
-    button.textContent = "Wird erstellt...";
-
-    try {
-
-        const file = fileInput.files[0];
-        const fileName = `${Date.now()}_${file.name}`;
-
-        const { data, error: uploadError } =
-            await supabaseClient
-                .storage
-                .from("activities")
-                .upload(
-                    fileName,
-                    file
-                );
-
-        if (uploadError) {
-
-            errorBox.textContent =
-                "Fehler beim Hochladen der Datei.";
-
-            return;
-
-        }
-
-        const { data: insertData, error: insertError } =
-            await supabaseClient
-                .from("activities")
-                .insert({
-                    teacher_email: TEACHER_EMAIL,
-                    name: name,
-                    pdf_path: fileName,
-                    created_at: new Date().toISOString()
-                })
-                .select();
-
-        if (insertError) {
-
-            errorBox.textContent =
-                "Fehler beim Speichern der Aktivität.";
-
-            return;
-
-        }
-
-        document
-            .getElementById(
-                "activityName"
-            )
-            .value = "";
-
-        fileInput.value = "";
-
-        loadActivities();
-
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-        errorBox.textContent =
-            "Ein Fehler ist aufgetreten.";
-
-    } finally {
-
-        button.disabled = false;
-        button.textContent = "Erstellen";
-
-    }
-
-}
-
-
 async function loadActivities() {
 
     const container =
@@ -1378,227 +1153,109 @@ async function loadActivities() {
 
         if (error) {
 
+            console.error(
+                "Erreur lors du chargement des activités:",
+                error
+            );
+
             container.innerHTML =
-                '<div class="empty-state">Fehler beim Laden der Aktivitäten.</div>';
+                '<div class="loading">Erreur lors du chargement.</div>';
 
             return;
 
         }
 
         if (!activities || activities.length === 0) {
-
             container.innerHTML =
-                '<div class="empty-state">Noch keine Aktivitäten erstellt.</div>';
-
+                '<div class="loading">Aucune activité trouvée.</div>';
             return;
-
         }
 
         let html = "";
 
         for (const activity of activities) {
 
-            const participantData = await getActivityParticipants(activity.id);
+            const activityLink =
+                "https://example.com/activity/" + activity.id;
 
-            const participantsHtml =
-                participantData.length > 0
-                    ? participantData
-                        .map(p => `
-                            <div class="participant-row">
-                                <span class="participant-name">${p.student_name}</span>
-                                <span class="participant-time">${p.time_spent} Min</span>
-                            </div>
-                        `)
-                        .join("")
-                    : '<div class="empty-state" style="padding: 20px; margin: 0;">Keine Teilnehmer</div>';
-
-            const activityLink = `${window.location.origin}/student.html?activity_id=${activity.id}`;
+            const info = await supabaseClient
+                .from("activities")
+                .select("id, name, created_at")
+                .eq("id", activity.id)
+                .single();
 
             html += `
                 <div class="activity-card">
-
                     <div class="activity-top">
-
                         <div>
-
                             <h3 class="activity-title">
-                                📄 ${activity.name}
+                                ${activity.name}
                             </h3>
-
                             <p class="activity-date">
-                                Erstellt: ${new Date(activity.created_at).toLocaleDateString("de-DE")}
+                                ${new Date(activity.created_at).toLocaleDateString("de-DE")}
                             </p>
-
                         </div>
-
                         <div class="activity-actions">
-
-                            <button
-                                class="secondary"
-                                onclick="copyToClipboard('${activityLink}')"
-                            >
+                            <button class="secondary" onclick="copyToClipboard('${activityLink}')">
                                 🔗 Link kopieren
                             </button>
-
-                            <button
-                                class="danger"
-                                onclick="deleteActivity('${activity.id}')"
-                            >
+                            <button class="danger" onclick="deleteActivity('${activity.id}')">
                                 🗑️ Löschen
                             </button>
-
                         </div>
-
                     </div>
-
                     <div class="link-container">
-
-                        <input
-                            type="text"
-                            value="${activityLink}"
-                            readonly
-                        >
-
-                        <button
-                            class="primary"
-                            onclick="copyToClipboard('${activityLink}')"
-                        >
+                        <input type="text" value="${activityLink}" readonly>
+                        <button class="primary" onclick="copyToClipboard('${activityLink}')">
                             Kopieren
                         </button>
-
                     </div>
-
-                    <div style="margin-top: 25px;">
-
-                        <h3 style="margin: 0 0 15px;">
-                            👥 Teilnehmer
-                        </h3>
-
-                        ${participantsHtml}
-
-                    </div>
-
                 </div>
             `;
-
         }
 
         container.innerHTML = html;
 
     } catch (error) {
 
-        console.error(
-            error
-        );
-
-        container.innerHTML =
-            '<div class="empty-state">Fehler beim Laden.</div>';
-
-    }
-
-}
-
-
-async function getActivityParticipants(activityId) {
-
-    try {
-
-        const { data, error } =
-            await supabaseClient
-                .from("participations")
-                .select("student_name, time_spent")
-                .eq("activity_id", activityId)
-                .order("time_spent", { ascending: false });
-
-        if (error) return [];
-
-        return data || [];
-
-    } catch (error) {
-
         console.error(error);
-        return [];
+        container.innerHTML =
+            '<div class="loading">Erreur lors du chargement.</div>';
 
     }
 
 }
-
 
 function copyToClipboard(text) {
-
     navigator.clipboard.writeText(text).then(() => {
-
         const notification = document.createElement("div");
         notification.className = "copy-success";
         notification.textContent = "✓ Link kopiert!";
-
         document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
-
+        setTimeout(() => notification.remove(), 3000);
     });
-
 }
 
-
 async function deleteActivity(activityId) {
-
-    if (!confirm("Sind Sie sicher, dass Sie diese Aktivität löschen möchten?")) {
+    if (!confirm("Voulez-vous supprimer cette activité ?")) {
         return;
     }
 
     try {
-
         await supabaseClient
             .from("activities")
             .delete()
             .eq("id", activityId);
 
-        await supabaseClient
-            .from("participations")
-            .delete()
-            .eq("activity_id", activityId);
-
         loadActivities();
 
     } catch (error) {
-
         console.error(error);
-        alert("Fehler beim Löschen der Aktivität.");
-
+        alert("Erreur lors de la suppression.");
     }
-
 }
-
-
-/* =====================================================
-   ECHTZEIT-UPDATES
-===================================================== */
-
-function subscribeToParticipations() {
-
-    supabaseClient
-        .channel("participations")
-        .on(
-            "postgres_changes",
-            { event: "*", schema: "public", table: "participations" },
-            () => {
-                loadActivities();
-            }
-        )
-        .subscribe();
-
-}
-
-
-/* =====================================================
-   INITIALISIERUNG
-===================================================== */
 
 checkSession();
-subscribeToParticipations();
 
 </script>
 
