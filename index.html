@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Lehrerbereich</title>
+    <title>Espace professeur</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -22,43 +22,58 @@
             color: #172033;
         }
 
-        button,
-        input {
-            font-family: inherit;
-        }
-
-        .hidden {
-            display: none !important;
-        }
+        /* ==============================
+           LOGIN
+        ============================== */
 
         .login-page {
             min-height: 100vh;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             padding: 20px;
-            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff,
+                    #f8fafc
+                );
         }
 
         .login-card {
             width: 100%;
-            max-width: 440px;
+            max-width: 430px;
+
             background: white;
+
             padding: 35px;
+
             border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.10);
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.10);
         }
 
         .logo {
             width: 65px;
             height: 65px;
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             background: #4f46e5;
+
             color: white;
+
             border-radius: 18px;
+
             font-size: 30px;
+
             margin-bottom: 25px;
         }
 
@@ -70,10 +85,6 @@
             margin-top: 0;
         }
 
-        h3 {
-            margin-bottom: 10px;
-        }
-
         .description {
             color: #64748b;
             line-height: 1.5;
@@ -81,18 +92,26 @@
 
         label {
             display: block;
+
             font-weight: bold;
+
             margin-top: 20px;
             margin-bottom: 8px;
         }
 
         input {
             width: 100%;
+
             padding: 14px;
+
             border: 1px solid #dbe1ea;
+
             border-radius: 11px;
+
             font-size: 15px;
+
             outline: none;
+
             background: white;
         }
 
@@ -102,10 +121,15 @@
 
         button {
             border: 0;
+
             border-radius: 11px;
+
             padding: 13px 18px;
+
             font-size: 15px;
+
             font-weight: bold;
+
             cursor: pointer;
         }
 
@@ -128,39 +152,39 @@
             color: #334155;
         }
 
-        .secondary:hover {
-            background: #cbd5e1;
-        }
-
         .danger {
             background: #fee2e2;
             color: #991b1b;
         }
 
-        .danger:hover {
-            background: #fecaca;
-        }
-
         .error {
             color: #dc2626;
             margin-top: 15px;
-            line-height: 1.4;
         }
 
-        .success {
-            color: #16a34a;
-            margin-top: 15px;
+
+        /* ==============================
+           DASHBOARD
+        ============================== */
+
+        .dashboard {
+            min-height: 100vh;
         }
 
         header {
-            min-height: 70px;
+            height: 70px;
+
             background: white;
+
             border-bottom: 1px solid #e2e8f0;
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
-            padding: 12px 30px;
-            gap: 20px;
+
+            padding: 0 30px;
         }
 
         header h1 {
@@ -171,114 +195,180 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 15px;
         }
 
-        .user-name {
+        .user-email {
             color: #64748b;
             font-size: 14px;
         }
 
         .container {
-            width: 100%;
             max-width: 1200px;
+
             margin: auto;
+
             padding: 30px 20px;
         }
 
+
+        /* ==============================
+           CREATE
+        ============================== */
+
         .card {
             background: white;
+
             border-radius: 18px;
+
             padding: 25px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, .05);
+
+            box-shadow:
+                0 5px 25px
+                rgba(0, 0, 0, .05);
+
             margin-bottom: 25px;
         }
 
         .create-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr auto;
+
+            grid-template-columns:
+                1fr 2fr auto;
+
             gap: 12px;
+
             align-items: end;
         }
 
+
+        /* ==============================
+           ACTIVITIES
+        ============================== */
+
         .activity-card {
             border: 1px solid #e2e8f0;
+
             border-radius: 16px;
+
             padding: 20px;
+
             margin-top: 15px;
         }
 
         .activity-top {
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             gap: 20px;
         }
 
         .activity-title {
             font-size: 19px;
+
             font-weight: bold;
+
             margin-bottom: 5px;
         }
 
         .activity-date {
             color: #94a3b8;
+
             font-size: 13px;
         }
 
         .activity-actions {
             display: flex;
+
             gap: 10px;
+
             flex-wrap: wrap;
         }
 
+
+        /* ==============================
+           LINK
+        ============================== */
+
         .link-container {
             display: flex;
+
             margin-top: 18px;
         }
 
         .link-container input {
             flex: 1;
-            border-radius: 10px 0 0 10px;
+
+            border-radius:
+                10px 0 0 10px;
+
             background: #f8fafc;
         }
 
         .link-container button {
-            border-radius: 0 10px 10px 0;
+            border-radius:
+                0 10px 10px 0;
         }
+
+
+        /* ==============================
+           STATS
+        ============================== */
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 15px;
+
             margin-top: 25px;
         }
 
         .stat {
             background: #f8fafc;
+
             border-radius: 15px;
+
             padding: 20px;
         }
 
         .stat-label {
             color: #64748b;
+
             font-size: 14px;
         }
 
         .stat-number {
             font-size: 32px;
+
             font-weight: bold;
+
             margin-top: 8px;
         }
 
+
+        /* ==============================
+           GRAPH
+        ============================== */
+
         .graph {
             margin-top: 20px;
+
             height: 25px;
+
             width: 100%;
+
             display: flex;
+
             overflow: hidden;
+
             border-radius: 20px;
+
             background: #e2e8f0;
         }
 
@@ -292,17 +382,24 @@
 
         .legend {
             display: flex;
+
             gap: 20px;
+
             margin-top: 12px;
+
             font-size: 14px;
+
             color: #64748b;
         }
 
         .dot {
             width: 10px;
             height: 10px;
+
             border-radius: 50%;
+
             display: inline-block;
+
             margin-right: 5px;
         }
 
@@ -314,61 +411,60 @@
             background: #94a3b8;
         }
 
+
+        /* ==============================
+           TABLE
+        ============================== */
+
         .people-title {
             margin-top: 30px;
         }
 
         table {
             width: 100%;
+
             border-collapse: collapse;
+
             margin-top: 15px;
         }
 
         th,
         td {
             padding: 14px;
-            border-bottom: 1px solid #e2e8f0;
+
+            border-bottom:
+                1px solid #e2e8f0;
+
             text-align: left;
         }
 
         th {
             color: #64748b;
+
             font-size: 14px;
         }
 
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, .55);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+
+        /* ==============================
+           HIDDEN
+        ============================== */
+
+        .hidden {
+            display: none !important;
         }
 
-        .modal-card {
-            width: 100%;
-            max-width: 440px;
-            background: white;
-            border-radius: 22px;
-            padding: 30px;
-            box-shadow: 0 20px 70px rgba(0, 0, 0, .20);
-        }
 
-        .loading {
-            text-align: center;
-            color: #64748b;
-            padding: 20px;
-        }
+        /* ==============================
+           RESPONSIVE
+        ============================== */
 
         @media(max-width: 750px) {
 
             header {
-                padding: 15px;
+                padding: 0 15px;
             }
 
-            .user-name {
+            .user-email {
                 display: none;
             }
 
@@ -382,6 +478,7 @@
 
             .activity-top {
                 align-items: flex-start;
+
                 flex-direction: column;
             }
 
@@ -391,6 +488,7 @@
 
             .link-container input {
                 border-radius: 10px;
+
                 margin-bottom: 8px;
             }
 
@@ -398,26 +496,24 @@
                 border-radius: 10px;
             }
 
-            .activity-actions {
-                width: 100%;
-            }
-
-            .activity-actions button {
-                flex: 1;
-            }
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<!-- =========================
-     ANMELDUNG
-========================= -->
 
-<div id="loginPage" class="login-page">
+<!-- ==================================================
+     PAGE CONNEXION
+================================================== -->
+
+<div
+    id="loginPage"
+    class="login-page"
+>
 
     <div class="login-card">
 
@@ -426,370 +522,288 @@
         </div>
 
         <h1>
-            Lehrerbereich
+            Espace professeur
         </h1>
 
         <p class="description">
-            Melden Sie sich an, um Ihre Aktivitäten zu verwalten
-            und Teilnahmen einzusehen.
+            Connecte-toi pour créer tes activités
+            et consulter les participations.
         </p>
 
-        <label for="identifier">
-            Benutzername
+
+        <label for="email">
+            Adresse email
         </label>
 
         <input
-            id="identifier"
-            type="text"
-            placeholder="Benutzername"
-            autocomplete="username"
+            id="email"
+            type="email"
+            placeholder="professeur@email.fr"
         >
 
+
         <label for="password">
-            Passwort
+            Mot de passe
         </label>
 
         <input
             id="password"
             type="password"
-            placeholder="Passwort"
-            autocomplete="current-password"
+            placeholder="Mot de passe"
         >
+
 
         <button
             id="loginButton"
             class="primary"
             style="width:100%; margin-top:20px;"
         >
-            Anmelden
+            Se connecter
         </button>
 
-        <div id="loginError" class="error"></div>
+
+        <div
+            id="loginError"
+            class="error"
+        ></div>
 
     </div>
 
 </div>
 
 
-<!-- =========================
-     DASHBOARD
-========================= -->
 
-<div id="dashboard" class="dashboard hidden">
+<!-- ==================================================
+     DASHBOARD
+================================================== -->
+
+<div
+    id="dashboard"
+    class="dashboard hidden"
+>
+
+
+    <!-- HEADER -->
 
     <header>
 
         <h1>
-            📚 Meine Aktivitäten
+            📚 Mes activités
         </h1>
+
 
         <div class="header-right">
 
             <span
-                id="userName"
-                class="user-name"
-            >
-                herr.lamari
-            </span>
+                id="userEmail"
+                class="user-email"
+            ></span>
 
-            <button
-                id="changePasswordButton"
-                class="secondary"
-            >
-                🔑 Passwort ändern
-            </button>
 
             <button
                 id="logoutButton"
                 class="danger"
             >
-                Abmelden
+                Déconnexion
             </button>
 
         </div>
 
     </header>
 
+
+
     <main class="container">
 
-        <!-- ERSTELLEN -->
+
+        <!-- ==========================================
+             CREATION ACTIVITE
+        =========================================== -->
 
         <div class="card">
 
             <h2>
-                Aktivität erstellen
+                Créer une activité
             </h2>
 
             <p class="description">
-                Geben Sie der Aktivität einen Namen und
-                fügen Sie den Link zur Aktivität ein.
+                Donne un nom à l'activité et colle
+                le lien vers l'activité.
             </p>
+
 
             <div class="create-grid">
 
+
                 <div>
 
-                    <label for="activityName">
-                        Name der Aktivität
+                    <label>
+                        Nom
                     </label>
 
                     <input
                         id="activityName"
-                        type="text"
-                        placeholder="Bsp.: Matheübung"
-                        maxlength="150"
+                        placeholder="Ex : Exercice de maths"
                     >
 
                 </div>
 
+
                 <div>
 
-                    <label for="activityUrl">
-                        Link zur Aktivität
+                    <label>
+                        Lien de l'activité
                     </label>
 
                     <input
                         id="activityUrl"
-                        type="url"
                         placeholder="https://..."
                     >
 
                 </div>
 
+
                 <button
                     id="createButton"
                     class="primary"
                 >
-                    Erstellen
+                    Créer
                 </button>
+
 
             </div>
 
-            <div id="createError" class="error"></div>
+
+            <div
+                id="createError"
+                class="error"
+            ></div>
 
         </div>
 
 
-        <!-- AKTIVITÄTEN -->
+
+        <!-- ==========================================
+             LISTE ACTIVITES
+        =========================================== -->
 
         <div class="card">
 
             <h2>
-                Meine Aktivitäten
+                Mes activités
             </h2>
 
+
             <div id="activities">
-                <div class="loading">
-                    Laden...
-                </div>
+
+                Chargement...
+
             </div>
 
         </div>
+
 
     </main>
 
 </div>
 
 
-<!-- =========================
-     MODAL PASSWORT
-========================= -->
 
-<div id="passwordModal" class="modal hidden">
-
-    <div class="modal-card">
-
-        <h2>
-            🔑 Passwort ändern
-        </h2>
-
-        <p class="description">
-            Wählen Sie ein neues Passwort.
-        </p>
-
-        <label for="newPassword">
-            Neues Passwort
-        </label>
-
-        <input
-            id="newPassword"
-            type="password"
-            placeholder="Neues Passwort"
-            autocomplete="new-password"
-        >
-
-        <label for="confirmPassword">
-            Passwort bestätigen
-        </label>
-
-        <input
-            id="confirmPassword"
-            type="password"
-            placeholder="Passwort bestätigen"
-            autocomplete="new-password"
-        >
-
-        <button
-            id="savePasswordButton"
-            class="primary"
-            style="width:100%; margin-top:20px;"
-        >
-            Speichern
-        </button>
-
-        <button
-            id="cancelPasswordButton"
-            class="secondary"
-            style="width:100%; margin-top:10px;"
-        >
-            Abbrechen
-        </button>
-
-        <div id="passwordError" class="error"></div>
-
-    </div>
-
-</div>
-
-
-<!-- =========================
-     SUPABASE-KONFIG
-========================= -->
+<!-- ==================================================
+     CONFIGURATION
+================================================== -->
 
 <script src="config.js"></script>
 
+
 <script>
 
-"use strict";
+    // ==================================================
+    // SUPABASE
+    // ==================================================
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
 
-/* =====================================================
-   CONFIGURATION VERIFIZIEREN
-===================================================== */
+    // ==================================================
+    // ELEMENTS
+    // ==================================================
 
-if (
-    typeof SUPABASE_URL === "undefined" ||
-    typeof SUPABASE_KEY === "undefined"
-) {
+    const loginPage =
+        document.getElementById(
+            "loginPage"
+        );
 
-    document.body.innerHTML = `
-        <div style="
-            font-family:Arial;
-            padding:40px;
-            color:#991b1b;
-        ">
-            <h1>Konfigurationsfehler</h1>
-
-            <p>
-                Die Datei <strong>config.js</strong>
-                wurde nicht gefunden oder ist unvollständig.
-            </p>
-
-            <p>
-                Stellen Sie sicher, dass sie sich im selben Ordner
-                wie index.html befindet.
-            </p>
-        </div>
-    `;
-
-    throw new Error(
-        "SUPABASE_URL oder SUPABASE_KEY fehlt"
-    );
-
-}
-
-const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+    const dashboard =
+        document.getElementById(
+            "dashboard"
+        );
 
 
-const TEACHER_IDENTIFIER =
-    "herr.lamari";
+    // ==================================================
+    // AFFICHAGE
+    // ==================================================
+
+    function showLogin() {
+
+        loginPage.classList.remove(
+            "hidden"
+        );
+
+        dashboard.classList.add(
+            "hidden"
+        );
+
+    }
 
 
-const TEACHER_EMAIL =
-    "herr.lamari@prof.pronote-activites.local";
+    function showDashboard(user) {
+
+        loginPage.classList.add(
+            "hidden"
+        );
+
+        dashboard.classList.remove(
+            "hidden"
+        );
 
 
-function showLogin() {
+        document.getElementById(
+            "userEmail"
+        ).textContent =
+            user.email;
 
-    loginPage.classList.remove(
-        "hidden"
-    );
 
-    dashboard.classList.add(
-        "hidden"
-    );
+        loadActivities();
 
-}
+    }
 
-function showDashboard(user) {
 
-    loginPage.classList.add(
-        "hidden"
-    );
+    // ==================================================
+    // VERIFIER CONNEXION
+    // ==================================================
 
-    dashboard.classList.remove(
-        "hidden"
-    );
-
-    document.getElementById(
-        "userName"
-    ).textContent =
-        TEACHER_IDENTIFIER;
-
-    loadActivities();
-
-}
-
-async function checkSession() {
-
-    try {
+    async function checkSession() {
 
         const {
-            data,
-            error
+            data: {
+                session
+            }
         } =
             await supabaseClient
                 .auth
                 .getSession();
 
-        if (error) {
 
-            console.error(
-                "Sitzungsfehler:",
-                error
+        if (session) {
+
+            showDashboard(
+                session.user
             );
-
-            showLogin();
-
-            return;
-
-        }
-
-        if (data.session) {
-
-            if (
-                data.session.user.email
-                ===
-                TEACHER_EMAIL
-            ) {
-
-                showDashboard(
-                    data.session.user
-                );
-
-            } else {
-
-                await supabaseClient
-                    .auth
-                    .signOut();
-
-                showLogin();
-
-            }
 
         } else {
 
@@ -797,80 +811,61 @@ async function checkSession() {
 
         }
 
-    } catch (error) {
-
-        console.error(
-            error
-        );
-
-        showLogin();
-
     }
 
-}
 
-async function login() {
+    // ==================================================
+    // CONNEXION
+    // ==================================================
 
-    const identifier =
-        document
-            .getElementById(
-                "identifier"
-            )
-            .value
-            .trim();
-
-    const password =
-        document
-            .getElementById(
-                "password"
-            )
-            .value;
-
-    const errorBox =
-        document
-            .getElementById(
-                "loginError"
-            );
-
-    errorBox.textContent = "";
-
-    if (
-        !identifier ||
-        !password
-    ) {
-
-        errorBox.textContent =
-            "Bitte füllen Sie alle Felder aus.";
-
-        return;
-
-    }
-
-    if (
-        identifier.toLowerCase()
-        !==
-        TEACHER_IDENTIFIER
-    ) {
-
-        errorBox.textContent =
-            "Benutzername oder Passwort falsch.";
-
-        return;
-
-    }
-
-    const button =
-        document.getElementById(
+    document
+        .getElementById(
             "loginButton"
+        )
+        .addEventListener(
+            "click",
+            login
         );
 
-    button.disabled =
-        true;
 
-    button.textContent =
-        "Anmeldung...";
+    async function login() {
 
-    try {
+        const email =
+            document
+                .getElementById(
+                    "email"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "password"
+                )
+                .value;
+
+
+        const errorBox =
+            document
+                .getElementById(
+                    "loginError"
+                );
+
+
+        errorBox.textContent = "";
+
+
+        if (!email || !password) {
+
+            errorBox.textContent =
+                "Remplis tous les champs.";
+
+            return;
+
+        }
+
 
         const {
             data,
@@ -881,381 +876,366 @@ async function login() {
                 .signInWithPassword({
 
                     email:
-                        TEACHER_EMAIL,
+                        email,
 
                     password:
                         password
 
                 });
 
+
         if (error) {
 
-            console.error(
-                "Supabase-Anmeldefehler:",
-                error
-            );
+            console.error(error);
 
             errorBox.textContent =
-                error.message ||
-                "Benutzername oder Passwort falsch.";
+                "Email ou mot de passe incorrect.";
 
             return;
 
         }
 
-        if (
-            !data ||
-            !data.user
-        ) {
-
-            errorBox.textContent =
-                "Anmeldung nicht möglich.";
-
-            return;
-
-        }
-
-        if (
-            data.user.email
-            !==
-            TEACHER_EMAIL
-        ) {
-
-            await supabaseClient
-                .auth
-                .signOut();
-
-            errorBox.textContent =
-                "Dieses Konto ist nicht autorisiert.";
-
-            return;
-
-        }
 
         showDashboard(
             data.user
         );
 
-    } finally {
-
-        button.disabled = false;
-        button.textContent = "Anmelden";
-
     }
 
-}
 
-document
-    .getElementById(
-        "loginButton"
-    )
-    .addEventListener(
-        "click",
-        login
-    );
+    // ==================================================
+    // DECONNEXION
+    // ==================================================
 
-document
-    .getElementById(
-        "logoutButton"
-    )
-    .addEventListener(
-        "click",
-        logout
-    );
+    document
+        .getElementById(
+            "logoutButton"
+        )
+        .addEventListener(
+            "click",
+            async function() {
 
-async function logout() {
+                await supabaseClient
+                    .auth
+                    .signOut();
 
-    try {
+                showLogin();
 
-        await supabaseClient
-            .auth
-            .signOut();
-
-        showLogin();
-
-    } catch (error) {
-
-        console.error(
-            "Abmeldefehler:",
-            error
+            }
         );
 
-    }
 
-}
+    // ==================================================
+    // GENERATEUR CODE UNIQUE
+    // ==================================================
 
-document
-    .getElementById(
-        "changePasswordButton"
-    )
-    .addEventListener(
-        "click",
-        openPasswordModal
-    );
+    function generateCode() {
 
-document
-    .getElementById(
-        "cancelPasswordButton"
-    )
-    .addEventListener(
-        "click",
-        closePasswordModal
-    );
+        const chars =
+            "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-document
-    .getElementById(
-        "savePasswordButton"
-    )
-    .addEventListener(
-        "click",
-        saveNewPassword
-    );
 
-function openPasswordModal() {
+        const array =
+            new Uint32Array(16);
 
-    document
-        .getElementById(
-            "passwordModal"
-        )
-        .classList
-        .remove("hidden");
 
-    document
-        .getElementById(
-            "newPassword"
-        )
-        .value = "";
+        crypto.getRandomValues(
+            array
+        );
 
-    document
-        .getElementById(
-            "confirmPassword"
-        )
-        .value = "";
 
-    document
-        .getElementById(
-            "passwordError"
-        )
-        .textContent = "";
+        let code = "";
 
-}
 
-function closePasswordModal() {
+        for (
+            let i = 0;
+            i < array.length;
+            i++
+        ) {
 
-    document
-        .getElementById(
-            "passwordModal"
-        )
-        .classList
-        .add("hidden");
+            code +=
+                chars[
+                    array[i] %
+                    chars.length
+                ];
 
-}
+        }
 
-async function saveNewPassword() {
 
-    const newPassword =
-        document
-            .getElementById(
-                "newPassword"
-            )
-            .value;
-
-    const confirmPassword =
-        document
-            .getElementById(
-                "confirmPassword"
-            )
-            .value;
-
-    const errorBox =
-        document
-            .getElementById(
-                "passwordError"
-            );
-
-    errorBox.textContent = "";
-
-    if (!newPassword || !confirmPassword) {
-
-        errorBox.textContent =
-            "Bitte füllen Sie alle Felder aus.";
-
-        return;
+        return code;
 
     }
 
-    if (newPassword !== confirmPassword) {
 
-        errorBox.textContent =
-            "Die Passwörter stimmen nicht überein.";
+    // ==================================================
+    // CREER ACTIVITE
+    // ==================================================
 
-        return;
+    document
+        .getElementById(
+            "createButton"
+        )
+        .addEventListener(
+            "click",
+            createActivity
+        );
 
-    }
 
-    if (newPassword.length < 6) {
+    async function createActivity() {
 
-        errorBox.textContent =
-            "Das Passwort muss mindestens 6 Zeichen lang sein.";
+        const name =
+            document
+                .getElementById(
+                    "activityName"
+                )
+                .value
+                .trim();
 
-        return;
 
-    }
+        const url =
+            document
+                .getElementById(
+                    "activityUrl"
+                )
+                .value
+                .trim();
 
-    try {
 
-        const { error } =
-            await supabaseClient
-                .auth
-                .updateUser({
-                    password: newPassword
-                });
+        const errorBox =
+            document
+                .getElementById(
+                    "createError"
+                );
 
-        if (error) {
+
+        errorBox.textContent = "";
+
+
+        if (!name || !url) {
 
             errorBox.textContent =
-                error.message || "Fehler beim Aktualisieren des Passworts.";
+                "Remplis tous les champs.";
 
             return;
 
         }
 
-        closePasswordModal();
 
-    } catch (error) {
+        const code =
+            generateCode();
 
-        console.error(
-            error
-        );
 
-        errorBox.textContent =
-            "Fehler beim Aktualisieren des Passworts.";
-
-    }
-
-}
-
-async function loadActivities() {
-
-    const container =
-        document.getElementById(
-            "activities"
-        );
-
-    try {
-
-        const { data: activities, error } =
+        const { data, error } =
             await supabaseClient
                 .from("activities")
-                .select("*")
-                .eq("teacher_email", TEACHER_EMAIL)
-                .order("created_at", { ascending: false });
+                .insert([
+                    {
+                        name: name,
+                        url: url,
+                        code: code
+                    }
+                ])
+                .select();
+
 
         if (error) {
 
-            console.error(
-                "Erreur lors du chargement des activités:",
-                error
-            );
+            console.error(error);
 
-            container.innerHTML =
-                '<div class="loading">Erreur lors du chargement.</div>';
+            errorBox.textContent =
+                "Erreur lors de la création.";
 
             return;
 
         }
 
-        if (!activities || activities.length === 0) {
-            container.innerHTML =
-                '<div class="loading">Aucune activité trouvée.</div>';
-            return;
-        }
 
-        let html = "";
+        document
+            .getElementById(
+                "activityName"
+            )
+            .value = "";
 
-        for (const activity of activities) {
+        document
+            .getElementById(
+                "activityUrl"
+            )
+            .value = "";
 
-            const activityLink =
-                "https://example.com/activity/" + activity.id;
-
-            const info = await supabaseClient
-                .from("activities")
-                .select("id, name, created_at")
-                .eq("id", activity.id)
-                .single();
-
-            html += `
-                <div class="activity-card">
-                    <div class="activity-top">
-                        <div>
-                            <h3 class="activity-title">
-                                ${activity.name}
-                            </h3>
-                            <p class="activity-date">
-                                ${new Date(activity.created_at).toLocaleDateString("de-DE")}
-                            </p>
-                        </div>
-                        <div class="activity-actions">
-                            <button class="secondary" onclick="copyToClipboard('${activityLink}')">
-                                🔗 Link kopieren
-                            </button>
-                            <button class="danger" onclick="deleteActivity('${activity.id}')">
-                                🗑️ Löschen
-                            </button>
-                        </div>
-                    </div>
-                    <div class="link-container">
-                        <input type="text" value="${activityLink}" readonly>
-                        <button class="primary" onclick="copyToClipboard('${activityLink}')">
-                            Kopieren
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        container.innerHTML = html;
-
-    } catch (error) {
-
-        console.error(error);
-        container.innerHTML =
-            '<div class="loading">Erreur lors du chargement.</div>';
-
-    }
-
-}
-
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        const notification = document.createElement("div");
-        notification.className = "copy-success";
-        notification.textContent = "✓ Link kopiert!";
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
-    });
-}
-
-async function deleteActivity(activityId) {
-    if (!confirm("Voulez-vous supprimer cette activité ?")) {
-        return;
-    }
-
-    try {
-        await supabaseClient
-            .from("activities")
-            .delete()
-            .eq("id", activityId);
 
         loadActivities();
 
-    } catch (error) {
-        console.error(error);
-        alert("Erreur lors de la suppression.");
     }
-}
 
-checkSession();
+
+    // ==================================================
+    // CHARGER ACTIVITES
+    // ==================================================
+
+    async function loadActivities() {
+
+        const activitiesBox =
+            document.getElementById(
+                "activities"
+            );
+
+
+        const { data, error } =
+            await supabaseClient
+                .from("activities")
+                .select("*");
+
+
+        if (error) {
+
+            console.error(error);
+
+            activitiesBox.innerHTML =
+                "Erreur lors du chargement.";
+
+            return;
+
+        }
+
+
+        if (data.length === 0) {
+
+            activitiesBox.innerHTML =
+                "Aucune activité créée.";
+
+            return;
+
+        }
+
+
+        let html = "";
+
+
+        for (let i = 0; i < data.length; i++) {
+
+            const activity = data[i];
+
+            html += `
+
+                <div class="activity-card">
+
+                    <div class="activity-top">
+
+                        <div>
+
+                            <div class="activity-title">
+                                ${activity.name}
+                            </div>
+
+                            <div class="activity-date">
+                                Code : ${activity.code}
+                            </div>
+
+                        </div>
+
+                        <div class="activity-actions">
+
+                            <button
+                                class="secondary"
+                                onclick="copyCode('${activity.code}')"
+                            >
+                                📋 Copier code
+                            </button>
+
+                            <button
+                                class="danger"
+                                onclick="deleteActivity(${activity.id})"
+                            >
+                                🗑️ Supprimer
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="link-container">
+
+                        <input
+                            type="text"
+                            value="${activity.url}"
+                            readonly
+                        >
+
+                        <button
+                            class="primary"
+                            onclick="copyLink('${activity.url}')"
+                        >
+                            Copier le lien
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        activitiesBox.innerHTML = html;
+
+    }
+
+
+    // ==================================================
+    // COPIER CODE
+    // ==================================================
+
+    function copyCode(code) {
+
+        navigator.clipboard.writeText(code);
+
+    }
+
+
+    // ==================================================
+    // COPIER LIEN
+    // ==================================================
+
+    function copyLink(url) {
+
+        navigator.clipboard.writeText(url);
+
+    }
+
+
+    // ==================================================
+    // SUPPRIMER ACTIVITE
+    // ==================================================
+
+    async function deleteActivity(id) {
+
+        const { data, error } =
+            await supabaseClient
+                .from("activities")
+                .delete()
+                .eq("id", id);
+
+
+        if (error) {
+
+            console.error(error);
+
+            return;
+
+        }
+
+
+        loadActivities();
+
+    }
+
+
+    // ==================================================
+    // VERROUILLE SUR CHARGEMENT
+    // ==================================================
+
+    checkSession();
 
 </script>
 
